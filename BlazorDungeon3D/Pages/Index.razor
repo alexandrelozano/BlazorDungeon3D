@@ -1,6 +1,8 @@
 ﻿@inject IResizeListener listener
+@inject IConfiguration configuration
 @using System.Text;
 @using BlazorPro.BlazorSize;
+@using Microsoft.Extensions.Configuration;
 @page "/"
 
 <PageTitle>BlazorDungeon3D</PageTitle>
@@ -165,6 +167,7 @@ W  @DrawCompass()  E
 
     protected override void OnAfterRender(bool firstRender)
     {
+
         if (firstRender)
         {
             // Subscribe to the OnResized event. This will do work when the browser is resized.
@@ -193,11 +196,13 @@ W  @DrawCompass()  E
             scale = (decimal.Divide(browser.Width,bodyWidth)).ToString().Replace(",",".");
         }
 
-        return "1"; // scale;
+        return scale;
     }
 
     protected override async Task OnInitializedAsync()
     {
+        Log("New connection");
+
         dicDispBlocks.Add("wallLside0", "none");
         dicDispBlocks.Add("wallLside1", "none");
         dicDispBlocks.Add("wallLside2", "none");
@@ -259,6 +264,22 @@ W  @DrawCompass()  E
             }
 
         Render();
+    }
+
+    private void Log(string text)
+    {
+        try
+        {
+            string logFile = configuration.GetValue<string>("BlazorDungeon3D:LogFile");
+            if (Directory.Exists(Path.GetDirectoryName(logFile)))
+            {
+                string line = String.Format("{0} {1} {2}", DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss "), text, Environment.NewLine);
+                System.IO.File.AppendAllText(logFile, line);
+            }
+        }
+        catch (Exception e)
+        {
+        }
     }
 
     private void GoForward()
