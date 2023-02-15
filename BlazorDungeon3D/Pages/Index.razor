@@ -1,0 +1,552 @@
+﻿@inject IResizeListener listener
+@using System.Text;
+@using BlazorPro.BlazorSize;
+@page "/"
+
+<PageTitle>BlazorDungeon3D</PageTitle>
+
+<div style="transform: scale(@CalculateTransformScale()); transform-origin: 0% 0% 0px;">
+
+    <div tabindex="0" @onkeydown="KeyDown" id="viewport" style="width: @(vpWidth)px; height: @(vpHeight)px;">
+
+        <div id="overLay"></div>
+
+        <div class="roof"></div>
+        <div class="floor"></div>
+
+        @foreach (KeyValuePair<string, string> kvp in dicDispBlocks)
+        {
+            <div class="@kvp.Key" style="display: @kvp.Value"></div>
+        }
+
+    </div>
+
+    <table class="buttonstable" @onkeydown="KeyDown" style="width: @(vpWidth)px;">
+        <tr>
+            <td rowspan="2" width="25%">
+                <pre>   N
+W  @DrawCompass()  E
+   S
+                </pre>
+            </td>
+            <td>
+                <input id="Q" type="button" disabled="@commandsDisabled()" value="Q @Char.ConvertFromUtf32(11170)" class="buttonsmovement" @onclick="@(e => Move("KeyQ"))" />
+            </td>
+            <td>
+                <input id="W" type="button" disabled="@commandsDisabled()" value="W @Char.ConvertFromUtf32(11105)" class="buttonsmovement" @onclick="@(e => Move("KeyW"))" />
+            </td>
+            <td>
+                <input id="E" type="button" disabled="@commandsDisabled()" value="E @Char.ConvertFromUtf32(11171)" class="buttonsmovement" @onclick="@(e => Move("KeyE"))" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input id="A" type="button" disabled="@commandsDisabled()" value="A @Char.ConvertFromUtf32(11104)" class="buttonsmovement" @onclick="@(e => Move("KeyA"))" />
+            </td>
+            <td>
+                <input id="S" type="button" disabled="@commandsDisabled()" value="S @Char.ConvertFromUtf32(11107)" class="buttonsmovement" @onclick="@(e => Move("KeyS"))" />
+            </td>
+            <td>
+                <input id="D" type="button" disabled="@commandsDisabled()" value="D @Char.ConvertFromUtf32(11106)" class="buttonsmovement" @onclick="@(e => Move("KeyD"))" />
+            </td>
+        </tr>
+    </table>
+
+    <pre class="map" @onkeydown="KeyDown" style="width: @(vpWidth)px;">
+        @for (int y = cellMap.GetLength(1) - 1; y >= 0; y--)
+        {
+            for (int x = cellMap.GetLength(0) - 1; x >= 0; x--)
+            {
+            <span class="@cellMap[x,y].cssClass">@cellMap[x,y].character</span>        
+            }
+            @Environment.NewLine
+        }
+    </pre>
+
+</div>
+
+@code {
+
+    private class Cell
+    {
+        public string cssClass;
+        public string character { get; set; }
+    }
+
+    BrowserWindowSize browser = new BrowserWindowSize();
+
+    int curDir = 0;
+    int curX = 40;
+    int curY = 21;
+    protected bool waitMovement;
+    int speed = 200;    // Milliseconds between moves
+    int vpWidth = 448; //Viewport Width
+    int vpHeight = 272;//Viewport Height
+
+    string chPlayerN = "";
+    string chPlayerS = "";
+    string chPlayerW = "";
+    string chPlayerE = "";
+    string chWall = "";
+    string chCorridor = "";
+    Cell[,] cellMap;
+
+    Dictionary<string, string> dicDispBlocks = new Dictionary<string, string>();
+
+    char[,] curmap;
+    string[] cells = {
+    "111111111111111111111111111111111111111111111111111111111111111111111",
+    "100000100000000010000000001000000000000000001000000000100000000010001",
+    "101110111010111011111110101111101111101111101010111110101111111010111",
+    "101010001010101000001000100000101000001010001010000010101000000010001",
+    "101011101010101111101011111110101011111010111111111010101011111111101",
+    "101010001010101000100010001000101000101000100000000010001000100000001",
+    "101010111110101010111111101011111110101011111011111111111110111011111",
+    "101000000000100010100000001000000000100000000010000000000010001000001",
+    "101011111111111010101011111111111111101111111111111110111011101111101",
+    "101000100000001010001000000010000000100010000000000010001000101000001",
+    "101111101111101011111111101110101110111010111111111011101111101011111",
+    "101000100000101000100000100000100010100010100000001000100000000010001",
+    "101010101111101110101111111111111011101110111110101110111111111110111",
+    "100010001000001010100000001000001000000010000010100010000000100010001",
+    "101111111011111010111110101011101111111011111010111011111110101011101",
+    "100010001010000000100010100010001000001000001010001000100010001010001",
+    "111011101010111111101010101111111011101111111011111010101111111010111",
+    "100010001010000000001000101000000010100000001000100010100010000010101",
+    "101110111011111111101111111011111110111111101110101110101010111110101",
+    "101000100010001000101000001010001000000000101000100010101010000010001",
+    "101010101110101010111011101010101110111110101011111010111011111011101",
+    "100010100000100010000000100000100000100000100000000010000000001000001",
+    "111111111111111111111111111111111111111111111111111111111111111111111" };
+
+    protected bool commandsDisabled()
+    {
+        return waitMovement;
+    }
+
+    protected async void KeyDown(KeyboardEventArgs e)
+    {
+        Move(e.Code);
+    }
+
+    protected async void Move(string code)
+    {
+        if (!waitMovement)
+        {
+            waitMovement = true;
+
+            switch (code)
+            {
+                case "KeyW":
+                    GoForward();
+                    break;
+                case "KeyS":
+                    GoBack();
+                    break;
+                case "KeyA":
+                    GoLeft();
+                    break;
+                case "KeyD":
+                    GoRight();
+                    break;
+                case "KeyQ":
+                    TurnLeft();
+                    break;
+                case "KeyE":
+                    TurnRight();
+                    break;
+            }
+
+            await Task.Delay(speed);
+            waitMovement = false;
+            StateHasChanged();
+        }
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // Subscribe to the OnResized event. This will do work when the browser is resized.
+            listener.OnResized += WindowResized;
+        }
+    }
+
+    async void WindowResized(object _, BrowserWindowSize window)
+    {
+        // Get the browsers's width / height
+        browser = window;
+
+        // We're outside of the component's lifecycle, be sure to let it know it has to re-render.
+        StateHasChanged();
+    }
+
+    protected string CalculateTransformScale()
+    {
+        int bodyWidth = 1000;
+        string scale = "";
+
+        if (browser.Width < bodyWidth)
+            scale = "1";
+        else
+        {
+            scale = (decimal.Divide(browser.Width,bodyWidth)).ToString().Replace(",",".");
+        }
+
+        return scale;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        dicDispBlocks.Add("wallLside0", "none");
+        dicDispBlocks.Add("wallLside1", "none");
+        dicDispBlocks.Add("wallLside2", "none");
+        dicDispBlocks.Add("wallLside3", "none");
+        dicDispBlocks.Add("wallLside0_walldecor", "none");
+        dicDispBlocks.Add("wallLside1_walldecor", "none");
+
+        dicDispBlocks.Add("wallRside0", "none");
+        dicDispBlocks.Add("wallRside1", "none");
+        dicDispBlocks.Add("wallRside2", "none");
+        dicDispBlocks.Add("wallRside3", "none");
+        dicDispBlocks.Add("wallRside0_walldecor", "none");
+        dicDispBlocks.Add("wallRside1_walldecor", "none");
+
+        dicDispBlocks.Add("wallSide1_1", "none");
+        dicDispBlocks.Add("doorSide1_1", "none");
+        dicDispBlocks.Add("doorSide1_1_inner", "none");
+        dicDispBlocks.Add("doorSide1_2", "none");
+        dicDispBlocks.Add("doorSide1_2_inner", "none");
+
+        dicDispBlocks.Add("wallFront1", "none");
+        dicDispBlocks.Add("wallfrontTEXT", "none");
+        dicDispBlocks.Add("doorFront1", "none");
+        dicDispBlocks.Add("doorFront1_inner", "none");
+
+        dicDispBlocks.Add("doorFront1_button", "none");
+        dicDispBlocks.Add("wallSide1_2", "none");
+
+        dicDispBlocks.Add("wallSide2_1", "none");
+        dicDispBlocks.Add("doorSide2_1", "none");
+        dicDispBlocks.Add("doorSide2_1_inner", "none");
+        dicDispBlocks.Add("wallFront2", "none");
+        dicDispBlocks.Add("wallFront2_walldecor", "none");
+        dicDispBlocks.Add("doorFront2", "none");
+        dicDispBlocks.Add("doorFront2_inner", "none");
+        dicDispBlocks.Add("wallSide2_2", "none");
+        dicDispBlocks.Add("doorSide2_2", "none");
+        dicDispBlocks.Add("doorSide2_2_inner", "none");
+
+        dicDispBlocks.Add("wallSide3_1", "none");
+        dicDispBlocks.Add("wallFront3", "none");
+        dicDispBlocks.Add("wallSide3_2", "none");
+
+        chPlayerN = Char.ConvertFromUtf32(11165); ;
+        chPlayerS = Char.ConvertFromUtf32(11167); ;
+        chPlayerW = Char.ConvertFromUtf32(11164); ;
+        chPlayerE = Char.ConvertFromUtf32(11166); ;
+        chWall = Char.ConvertFromUtf32(1047550);
+        chCorridor = " ";
+
+        cellMap = new Cell[cells[0].Length, cells.GetLength(0)];
+
+        curmap = new char[cells[0].Length, cells.GetLength(0)];
+        for (int x = 0; x < cells[0].Length; x++)
+            for (int y = 0; y < cells.GetLength(0); y++)
+            {
+                curmap[x, y] = cells[y][x];
+                cellMap[x, y] = new Cell();
+            }
+
+        Render();
+    }
+
+    private void GoForward()
+    {
+        switch (curDir)
+        {
+            case 0:
+                if (curmap[curX, curY - 1] == '0') curY--;
+                break;
+            case 1:
+                if (curmap[curX + 1, curY] == '0') curX++;
+                break;
+            case 2:
+                if (curmap[curX, curY + 1] == '0') curY++;
+                break;
+            case 3:
+                if (curmap[curX - 1, curY] == '0') curX--;
+                break;
+        }
+
+        Render();
+    }
+
+    private void GoBack()
+    {
+        switch (curDir)
+        {
+            case 0:
+                if (curmap[curX, curY + 1] == '0') curY++;
+                break;
+            case 1:
+                if (curmap[curX - 1, curY] == '0') curX--;
+                break;
+            case 2:
+                if (curmap[curX, curY - 1] == '0') curY--;
+                break;
+            case 3:
+                if (curmap[curX + 1, curY] == '0') curX++;
+                break;
+        }
+
+        Render();
+    }
+
+    private void GoLeft()
+    {
+        switch (curDir)
+        {
+            case 0:
+                if (curmap[curX - 1, curY] == '0') curX--;
+                break;
+            case 1:
+                if (curmap[curX, curY - 1] == '0') curY--;
+                break;
+            case 2:
+                if (curmap[curX + 1, curY] == '0') curX++;
+                break;
+            case 3:
+                if (curmap[curX, curY + 1] == '0') curY++;
+                break;
+        }
+
+        Render();
+    }
+
+    private void GoRight()
+    {
+        switch (curDir)
+        {
+            case 0:
+                if (curmap[curX + 1, curY] == '0') curX++;
+                break;
+            case 1:
+                if (curmap[curX, curY + 1] == '0') curY++;
+                break;
+            case 2:
+                if (curmap[curX - 1, curY] == '0') curX--;
+                break;
+            case 3:
+                if (curmap[curX, curY - 1] == '0') curY--;
+                break;
+        }
+
+        Render();
+    }
+
+    private void TurnLeft()
+    {
+        if (curDir > 0)
+            curDir--;
+        else
+            curDir = 3;
+
+        Render();
+    }
+
+    private void TurnRight()
+    {
+        if (curDir < 3)
+            curDir++;
+        else
+            curDir = 0;
+
+        Render();
+    }
+
+    private void disblock(string xclass)
+    {
+        dicDispBlocks[xclass] = "block";
+    }
+
+    private void hideblock(string xclass)
+    {
+        dicDispBlocks[xclass] = "none";
+    }
+
+    private void checkcell(int x, int y, string xclass)
+    {
+        if (x >= 0 && x < curmap.GetLength(0) && y >= 0 && y < curmap.GetLength(1))
+        {
+            if (curmap[x, y] == '1')
+            {
+                disblock(xclass);
+            }
+            else
+            {
+                hideblock(xclass);
+            }
+        }
+    }
+
+    private void Render()
+    {
+        UpdateViewport();
+        UpdateCellMap();
+    }
+
+    private void UpdateCellMap()
+    {
+        for (int y = curmap.GetLength(1) - 1; y >= 0; y--)
+        {
+            for (int x = curmap.GetLength(0) - 1; x >= 0; x--)
+            {
+                if (curX == x && curY == y)
+                {
+                    switch (curDir)
+                    {
+                        case 0:
+                            cellMap[x, y].character = chPlayerS;
+                            break;
+                        case 1:
+                            cellMap[x, y].character = chPlayerW;
+                            break;
+                        case 2:
+                            cellMap[x, y].character = chPlayerN;
+                            break;
+                        case 3:
+                            cellMap[x, y].character = chPlayerE;
+                            break;
+                    }
+                    cellMap[x, y].cssClass = "mapplayer";
+                }
+                else
+                {
+                    if (curmap[x, y] == '1')
+                    {
+                        cellMap[x, y].character = chWall;
+                        cellMap[x, y].cssClass = "mapwall";
+                    }
+                    else
+                    {
+                        cellMap[x, y].character = chCorridor;
+                        cellMap[x, y].cssClass = "mapcorridor";
+                    }
+                }
+            }
+        }
+    }
+
+    private string DrawCompass()
+    {
+        string ret = "";
+
+        switch (curDir)
+        {
+            case 0:
+                ret = chPlayerS;
+                break;
+            case 1:
+                ret = chPlayerW;
+                break;
+            case 2:
+                ret = chPlayerN;
+                break;
+            case 3:
+                ret = chPlayerE;
+                break;
+        }
+
+        return ret;
+    }
+
+    private void UpdateViewport()
+    {
+        switch (curDir)
+        {
+            case 0:
+                checkcell(curX - 1, curY, "wallLside0");
+                checkcell(curX + 1, curY, "wallRside0");
+                checkcell(curX - 1, curY - 1, "wallLside1");
+                checkcell(curX + 1, curY - 1, "wallRside1");
+                checkcell(curX - 1, curY - 2, "wallLside2");
+                checkcell(curX + 1, curY - 2, "wallRside2");
+                checkcell(curX - 1, curY - 3, "wallLside3");
+                checkcell(curX + 1, curY - 3, "wallRside3");
+                checkcell(curX, curY - 1, "wallFront1");
+                checkcell(curX - 1, curY - 1, "wallSide1_1");
+                checkcell(curX + 1, curY - 1, "wallSide1_2");
+                checkcell(curX, curY - 2, "wallFront2");
+                checkcell(curX - 1, curY - 2, "wallSide2_1");
+                checkcell(curX + 1, curY - 2, "wallSide2_2");
+                checkcell(curX, curY - 3, "wallFront3");
+                checkcell(curX - 1, curY - 3, "wallSide3_1");
+                checkcell(curX + 1, curY - 3, "wallSide3_2");
+                checkcell(curX + 1, curY - 3, "wallSide3_2");
+                break;
+
+            case 1:
+                checkcell(curX, curY - 1, "wallLside0");
+                checkcell(curX, curY + 1, "wallRside0");
+                checkcell(curX + 1, curY - 1, "wallLside1");
+                checkcell(curX + 1, curY + 1, "wallRside1");
+                checkcell(curX + 2, curY - 1, "wallLside2");
+                checkcell(curX + 2, curY + 1, "wallRside2");
+                checkcell(curX + 3, curY - 1, "wallLside3");
+                checkcell(curX + 3, curY + 1, "wallRside3");
+                checkcell(curX + 1, curY, "wallFront1");
+                checkcell(curX + 1, curY - 1, "wallSide1_1");
+                checkcell(curX + 1, curY, "wallFront1");
+                checkcell(curX + 1, curY + 1, "wallSide1_2");
+                checkcell(curX + 2, curY, "wallFront2");
+                checkcell(curX + 2, curY - 1, "wallSide2_1");
+                checkcell(curX + 2, curY + 1, "wallSide2_2");
+                checkcell(curX + 3, curY, "wallFront3");
+                checkcell(curX + 3, curY - 1, "wallSide3_1");
+                checkcell(curX + 3, curY + 1, "wallSide3_2");
+                break;
+
+            case 2:
+                checkcell(curX + 1, curY, "wallLside0");
+                checkcell(curX - 1, curY, "wallRside0");
+                checkcell(curX + 1, curY + 1, "wallLside1");
+                checkcell(curX - 1, curY + 1, "wallRside1");
+                checkcell(curX + 1, curY + 2, "wallLside2");
+                checkcell(curX - 1, curY + 2, "wallRside2");
+                checkcell(curX + 1, curY + 3, "wallLside3");
+                checkcell(curX - 1, curY + 3, "wallRside3");
+                checkcell(curX, curY + 1, "wallFront1");
+                checkcell(curX + 1, curY + 1, "wallSide1_1");
+                checkcell(curX - 1, curY + 1, "wallSide1_2");
+                checkcell(curX, curY + 2, "wallFront2");
+                checkcell(curX + 1, curY + 2, "wallSide2_1");
+                checkcell(curX - 1, curY + 2, "wallSide2_2");
+                checkcell(curX, curY + 3, "wallFront3");
+                checkcell(curX + 1, curY + 3, "wallSide3_1");
+                checkcell(curX - 1, curY + 3, "wallSide3_2");
+                break;
+
+            case 3:
+                checkcell(curX, curY + 1, "wallLside0");
+                checkcell(curX, curY - 1, "wallRside0");
+                checkcell(curX - 1, curY + 1, "wallLside1");
+                checkcell(curX - 1, curY - 1, "wallRside1");
+                checkcell(curX - 2, curY + 1, "wallLside2");
+                checkcell(curX - 2, curY - 1, "wallRside2");
+                checkcell(curX - 3, curY + 1, "wallLside3");
+                checkcell(curX - 3, curY - 1, "wallRside3");
+                checkcell(curX - 1, curY, "wallFront1");
+                checkcell(curX - 1, curY + 1, "wallSide1_1");
+                checkcell(curX - 1, curY - 1, "wallSide1_2");
+                checkcell(curX - 2, curY, "wallFront2");
+                checkcell(curX - 2, curY + 1, "wallSide2_1");
+                checkcell(curX - 2, curY - 1, "wallSide2_2");
+                checkcell(curX - 3, curY, "wallFront3");
+                checkcell(curX - 3, curY + 1, "wallSide3_1");
+                checkcell(curX - 3, curY - 1, "wallSide3_2");
+                checkcell(curX - 3, curY - 1, "wallSide3_2");
+                break;
+        }
+    }
+}

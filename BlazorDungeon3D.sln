@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33213.308
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorDungeon3D", "BlazorDungeon3D\BlazorDungeon3D.csproj", "{C40645FD-6223-41AF-836E-70ABC7658392}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C40645FD-6223-41AF-836E-70ABC7658392}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C40645FD-6223-41AF-836E-70ABC7658392}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C40645FD-6223-41AF-836E-70ABC7658392}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C40645FD-6223-41AF-836E-70ABC7658392}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5E096ADC-772E-4DAC-9211-8AB0FC417CD1}
+	EndGlobalSection
+EndGlobal

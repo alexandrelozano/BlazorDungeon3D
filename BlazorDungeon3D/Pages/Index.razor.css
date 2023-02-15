@@ -1,0 +1,500 @@
+﻿@font-face {
+    font-family: 'fairfaxhd';
+    src: url('./fonts/fairfaxhd.ttf') format('truetype');
+}
+
+.map {
+    display: inline-block;
+    text-align: left;
+    color: black;
+    font-family: fairfaxhd, monospace;
+    margin: 0;
+    line-height: 1;
+    font-size: 12.9px;
+}
+
+.mapwall {
+    display: inline-block;
+    text-align: left;
+    color: sandybrown;
+    background-color: black;
+    font-family: fairfaxhd, monospace;
+    margin: 0;
+    line-height: 1;
+}
+
+.mapcorridor {
+    display: inline-block;
+    text-align: left;
+    color: sandybrown;
+    background-color: black;
+    font-family: fairfaxhd, monospace;
+    margin: 0;
+    line-height: 1;
+}
+
+.mapplayer {
+    display: inline-block;
+    text-align: left;
+    color: palegoldenrod;
+    background-color: black;
+    font-family: fairfaxhd, monospace;
+    margin: 0;
+    line-height: 1;
+}
+
+.buttonsmovement {
+    height: 100%;
+    width: 100%;
+    background-color: blanchedalmond;
+}
+
+.buttonstable {
+    height: 20px;
+    font-family: fairfaxhd, monospace;
+}
+
+.floor {
+    position: absolute;
+    bottom: 0px;
+    background-image: url('./gfx/floornor.png');
+    width: 448px;
+    height: 140px;
+}
+
+.roof {
+    position: absolute;
+    top: 0px;
+    background-image: url('./gfx/roofnor.png');
+    width: 448px;
+    height: 58px;
+}
+
+.wallLside0 {
+    position: absolute;
+    left: 0px;
+    background-image: url('./gfx/wallLSide0nor.png');
+    width: 64px;
+    z-index: 400;
+    height: 272px;
+    display: none;
+}
+
+.wallRside0 {
+    position: absolute;
+    right: 0px;
+    background-image: url('./gfx/wallRSide0nor.png');
+    width: 64px;
+    height: 272px;
+    z-index: 400;
+    display: none;
+}
+
+.wallRside1 {
+    position: absolute;
+    right: 64px;
+    top: 18px;
+    background-image: url('./gfx/wallRSide1nor.png');
+    width: 56px;
+    height: 222px;
+    z-index: 300;
+    display: none;
+}
+
+.wallLside1 {
+    position: absolute;
+    left: 64px;
+    top: 18px;
+    background-image: url('./gfx/wallLSide1nor.png');
+    width: 56px;
+    height: 222px;
+    z-index: 300;
+    display: none;
+}
+
+.wallRside2 {
+    position: absolute;
+    right: 120px;
+    top: 40px;
+    background-image: url('./gfx/wallRSide2nor.png');
+    width: 28px;
+    height: 142px;
+    z-index: 200;
+    display: none;
+}
+
+.wallLside2 {
+    position: absolute;
+    left: 120px;
+    top: 40px;
+    background-image: url('./gfx/wallLSide2nor.png');
+    ;
+    width: 28px;
+    height: 142px;
+    z-index: 200;
+    display: none;
+}
+
+.wallRside3 {
+    position: absolute;
+    right: 148px;
+    top: 49px;
+    background-image: url('./gfx/wallRSide3nor.png');
+    width: 22px;
+    height: 102px;
+    z-index: 100;
+    display: none;
+}
+
+.wallLside3 {
+    position: absolute;
+    left: 148px;
+    top: 49px;
+    background-image: url('./gfx/wallLSide3nor.png');
+    width: 22px;
+    height: 102px;
+    z-index: 100;
+    display: none;
+}
+
+.wallFront1 {
+    position: absolute;
+    left: 64px;
+    top: 18px;
+    background-image: url('./gfx/wallFront1nor.png');
+    width: 320px;
+    height: 222px;
+    z-index: 300;
+    display: none;
+}
+
+.wallSide1_1 {
+    position: absolute;
+    left: 0px;
+    top: 18px;
+    background-image: url('./gfx/wallSide1nor.png');
+    width: 64px;
+    height: 222px;
+    z-index: 300;
+    display: none;
+}
+
+.wallSide1_2 {
+    position: absolute;
+    right: 0px;
+    top: 18px;
+    background-image: url('./gfx/wallSide1alt.png');
+    width: 64px;
+    height: 222px;
+    z-index: 300;
+    display: none;
+}
+
+.wallFront2 {
+    position: absolute;
+    left: 120px;
+    top: 40px;
+    background-image: url('./gfx/wallFront2nor.png');
+    width: 208px;
+    height: 142px;
+    z-index: 200;
+    display: none;
+}
+
+.wallSide2_1 {
+    position: absolute;
+    left: 0px;
+    top: 40px;
+    background-image: url('./gfx/wallSide2nor.png');
+    width: 120px;
+    height: 142px;
+    z-index: 200;
+    display: none;
+}
+
+.wallSide2_2 {
+    position: absolute;
+    right: 0px;
+    top: 40px;
+    background-image: url('./gfx/wallSide2alt.png');
+    width: 120px;
+    height: 142px;
+    z-index: 200;
+    display: none;
+}
+
+.wallFront3 {
+    position: absolute;
+    right: 148px;
+    top: 49px;
+    background-image: url('./gfx/wallFront3nor.png');
+    width: 152px;
+    height: 102px;
+    z-index: 100;
+    display: none;
+}
+
+.wallSide3_1 {
+    position: absolute;
+    left: 0px;
+    top: 49px;
+    background-image: url('./gfx/wallSide3nor.png');
+    width: 148px;
+    height: 102px;
+    z-index: 100;
+    display: none;
+}
+
+.wallSide3_2 {
+    position: absolute;
+    right: 0px;
+    top: 49px;
+    background-image: url('./gfx/wallSide3nor.png');
+    width: 148px;
+    height: 102px;
+    z-index: 100;
+    display: none;
+}
+
+.wallfrontTEXT {
+    color: #3f3225;
+    font-weight: bold;
+    font-size: 18px;
+    margin-top: 18%;
+    text-align: center;
+    margin-left: 110px;
+    width: 100px;
+    font-family: Palatino Linotype, Book Antiqua, Palatino, serif;
+}
+
+
+.wallLside0_walldecor {
+    position: absolute;
+    left: 0px;
+    width: 64px;
+    z-index: 401;
+    height: 272px;
+    display: none;
+}
+
+.wallRside0_walldecor {
+    position: absolute;
+    right: 0px;
+    width: 64px;
+    z-index: 401;
+    height: 272px;
+    display: block;
+}
+
+.wallLside1_walldecor {
+    position: absolute;
+    left: 64px;
+    top: 18px;
+    width: 56px;
+    height: 222px;
+    z-index: 301;
+    display: none;
+}
+
+.wallRside1_walldecor {
+    position: absolute;
+    right: 64px;
+    top: 18px;
+    width: 56px;
+    height: 222px;
+    z-index: 301;
+    display: none;
+}
+
+.doorFront1 {
+    position: absolute;
+    left: 95px;
+    top: 30px;
+    width: 320px;
+    height: 222px;
+    z-index: 301;
+    display: none;
+    background-image: url('./gfx/doorFront1.png');
+    background-repeat: no-repeat;
+}
+
+.doorFront1_inner {
+    left: 39px;
+    width: 181px;
+    height: 166px;
+    display: none;
+    position: absolute;
+    top: 6px;
+    background-image: url('./gfx/doorinner_default.png');
+    background-position: bottom;
+}
+
+.doorFront2 {
+    position: absolute;
+    left: 135px;
+    top: 47px;
+    width: 175px;
+    height: 140px;
+    z-index: 201;
+    display: none;
+    background-image: url('./gfx/doorFront2.png');
+    background-repeat: no-repeat;
+}
+
+.doorFront2_inner {
+    left: 25px;
+    width: 125px;
+    height: 16px;
+    display: none;
+    position: absolute;
+    top: 4px;
+    background-image: url('./gfx/doorinner_default2.png');
+    background-position: bottom;
+    background-repeat: no-repeat;
+}
+
+.doorFront1_button {
+    position: absolute;
+    right: 100px;
+    width: 20px;
+    top: 80px;
+    height: 24px;
+    background-image: url('./gfx/doorbutton.png');
+    z-index: 2001;
+}
+
+.doorSide1_1 {
+    position: absolute;
+    left: 0px;
+    top: 15px;
+    width: 64px;
+    height: 222px;
+    z-index: 301;
+    display: none;
+    background-image: url('./gfx/doorSide1.png');
+    background-repeat: no-repeat;
+}
+
+.doorSide1_1_inner {
+    left: 0px;
+    width: 64px;
+    height: 166px;
+    display: none;
+    position: absolute;
+    top: 25px;
+    background-image: url('./gfx/doorinner_default.png');
+    background-position: bottom right;
+}
+
+.doorSide1_2 {
+    position: absolute;
+    right: 0px;
+    top: 15px;
+    width: 64px;
+    height: 222px;
+    z-index: 201;
+    display: none;
+    background-image: url('./gfx/doorSide1.png');
+    background-repeat: no-repeat;
+}
+
+.doorSide1_2_inner {
+    left: 0px;
+    width: 64px;
+    height: 166px;
+    display: none;
+    position: absolute;
+    top: 25px;
+    background-image: url('./gfx/doorinner_default.png');
+    background-position: bottom left;
+}
+
+.doorSide2_1 {
+    position: absolute;
+    right: 328px;
+    top: 47px;
+    width: 120px;
+    height: 140px;
+    z-index: 201;
+    display: none;
+    background-image: url('./gfx/doorFront2.png');
+    background-repeat: no-repeat;
+    background-position: top right;
+}
+
+.doorSide2_1_inner {
+    right: 25px;
+    width: 95px;
+    height: 16px;
+    display: none;
+    position: absolute;
+    top: 4px;
+    background-image: url('./gfx/doorinner_default2.png');
+    background-position: bottom right;
+    background-repeat: no-repeat;
+}
+
+
+
+.doorSide2_2 {
+    position: absolute;
+    left: 328px;
+    top: 47px;
+    width: 120px;
+    height: 140px;
+    z-index: 201;
+    display: none;
+    background-image: url('./gfx/doorFront2.png');
+    background-repeat: no-repeat;
+}
+
+.doorSide2_2_inner {
+    left: 25px;
+    width: 96px;
+    height: 16px;
+    display: none;
+    position: absolute;
+    top: 4px;
+    background-image: url('./gfx/doorinner_default2.png');
+    background-position: bottom left;
+    background-repeat: no-repeat;
+}
+
+.wallFront2_walldecor {
+    position: absolute;
+    left: 120px;
+    top: 40px;
+    width: 208px;
+    height: 142px;
+    z-index: 201;
+    display: none;
+}
+
+#infobox {
+    float: right;
+    background-color: #000000;
+    border: solid 2px #00c0c0;
+    color: #00c0c0;
+    display: none;
+}
+
+#infobox table {
+    color: #00c0c0 !important;
+}
+
+#viewport {
+    position: relative;
+    background-color: black;
+    z-index: 1;
+}
+
+#overLay {
+    background-color: black;
+    position: absolute;
+    z-index: 1000;
+    opacity: 0.6;
+    filter: alpha(opacity=60);
+    width: 448px;
+    height: 272px;
+    display: none;
+}
