@@ -3,6 +3,8 @@
 @using System.Text;
 @using BlazorPro.BlazorSize;
 @using Microsoft.Extensions.Configuration;
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor httpContextAccessor
 @page "/"
 
 <PageTitle>BlazorDungeon3D</PageTitle>
@@ -68,6 +70,8 @@ W  @DrawCompass()  E
 </div>
 
 @code {
+
+    
 
     private class Cell
     {
@@ -201,7 +205,7 @@ W  @DrawCompass()  E
 
     protected override async Task OnInitializedAsync()
     {
-        Log("New connection");
+        Log(string.Format("New connection from IP:{0}", httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString()));
 
         dicDispBlocks.Add("wallLside0", "none");
         dicDispBlocks.Add("wallLside1", "none");
