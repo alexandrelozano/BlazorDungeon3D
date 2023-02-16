@@ -34,24 +34,24 @@ W  @DrawCompass()  E
                 </pre>
             </td>
             <td>
-                <input id="Q" type="button" disabled="@commandsDisabled()" value="Q @Char.ConvertFromUtf32(11170)" class="buttonsmovement" @onclick="@(e => Move("KeyQ"))" />
+                <input id="Q" type="button" disabled="@commandsDisabled()" value="Q @Char.ConvertFromUtf32(8630)" class="buttonsmovement" @onclick="@(e => Move("KeyQ"))" />
             </td>
             <td>
-                <input id="W" type="button" disabled="@commandsDisabled()" value="W @Char.ConvertFromUtf32(11105)" class="buttonsmovement" @onclick="@(e => Move("KeyW"))" />
+                <input id="W" type="button" disabled="@commandsDisabled()" value="W @Char.ConvertFromUtf32(8593)" class="buttonsmovement" @onclick="@(e => Move("KeyW"))" />
             </td>
             <td>
-                <input id="E" type="button" disabled="@commandsDisabled()" value="E @Char.ConvertFromUtf32(11171)" class="buttonsmovement" @onclick="@(e => Move("KeyE"))" />
+                <input id="E" type="button" disabled="@commandsDisabled()" value="E @Char.ConvertFromUtf32(8631)" class="buttonsmovement" @onclick="@(e => Move("KeyE"))" />
             </td>
         </tr>
         <tr>
             <td>
-                <input id="A" type="button" disabled="@commandsDisabled()" value="A @Char.ConvertFromUtf32(11104)" class="buttonsmovement" @onclick="@(e => Move("KeyA"))" />
+                <input id="A" type="button" disabled="@commandsDisabled()" value="A @Char.ConvertFromUtf32(8592)" class="buttonsmovement" @onclick="@(e => Move("KeyA"))" />
             </td>
             <td>
-                <input id="S" type="button" disabled="@commandsDisabled()" value="S @Char.ConvertFromUtf32(11107)" class="buttonsmovement" @onclick="@(e => Move("KeyS"))" />
+                <input id="S" type="button" disabled="@commandsDisabled()" value="S @Char.ConvertFromUtf32(8595)" class="buttonsmovement" @onclick="@(e => Move("KeyS"))" />
             </td>
             <td>
-                <input id="D" type="button" disabled="@commandsDisabled()" value="D @Char.ConvertFromUtf32(11106)" class="buttonsmovement" @onclick="@(e => Move("KeyD"))" />
+                <input id="D" type="button" disabled="@commandsDisabled()" value="D @Char.ConvertFromUtf32(8594)" class="buttonsmovement" @onclick="@(e => Move("KeyD"))" />
             </td>
         </tr>
     </table>
@@ -124,6 +124,29 @@ W  @DrawCompass()  E
     "101010101110101010111011101010101110111110101011111010111011111011101",
     "100010100000100010000000100000100000100000100000000010000000001000001",
     "111111111111111111111111111111111111111111111111111111111111111111111" };
+
+    private string DrawCompass()
+    {
+        string ret = "";
+
+        switch (curDir)
+        {
+            case 0:
+                ret = Char.ConvertFromUtf32(8681);
+                break;
+            case 1:
+                ret = Char.ConvertFromUtf32(8678);
+                break;
+            case 2:
+                ret = Char.ConvertFromUtf32(8679);
+                break;
+            case 3:
+                ret = Char.ConvertFromUtf32(8680);
+                break;
+        }
+
+        return ret;
+    }
 
     protected bool commandsDisabled()
     {
@@ -250,10 +273,10 @@ W  @DrawCompass()  E
         dicDispBlocks.Add("wallFront3", "none");
         dicDispBlocks.Add("wallSide3_2", "none");
 
-        chPlayerN = Char.ConvertFromUtf32(11165); ;
-        chPlayerS = Char.ConvertFromUtf32(11167); ;
-        chPlayerW = Char.ConvertFromUtf32(11164); ;
-        chPlayerE = Char.ConvertFromUtf32(11166); ;
+        chPlayerN = Char.ConvertFromUtf32(11165);
+        chPlayerS = Char.ConvertFromUtf32(11167);
+        chPlayerW = Char.ConvertFromUtf32(11164);
+        chPlayerE = Char.ConvertFromUtf32(11166);
         chWall = Char.ConvertFromUtf32(1047550);
         chCorridor = " ";
 
@@ -461,29 +484,6 @@ W  @DrawCompass()  E
                 }
             }
         }
-    }
-
-    private string DrawCompass()
-    {
-        string ret = "";
-
-        switch (curDir)
-        {
-            case 0:
-                ret = chPlayerS;
-                break;
-            case 1:
-                ret = chPlayerW;
-                break;
-            case 2:
-                ret = chPlayerN;
-                break;
-            case 3:
-                ret = chPlayerE;
-                break;
-        }
-
-        return ret;
     }
 
     private void UpdateViewport()
