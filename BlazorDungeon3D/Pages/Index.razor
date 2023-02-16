@@ -71,8 +71,6 @@ W  @DrawCompass()  E
 
 @code {
 
-    
-
     private class Cell
     {
         public string cssClass;
@@ -82,7 +80,7 @@ W  @DrawCompass()  E
     BrowserWindowSize browser = new BrowserWindowSize();
 
     int curDir = 0;
-    int curX = 40;
+    int curX = 66;
     int curY = 21;
     protected bool waitMovement;
     int speed = 200;    // Milliseconds between moves
@@ -100,6 +98,8 @@ W  @DrawCompass()  E
     Dictionary<string, string> dicDispBlocks = new Dictionary<string, string>();
 
     char[,] curmap;
+    bool[,] visiblemap;
+
     string[] cells = {
     "111111111111111111111111111111111111111111111111111111111111111111111",
     "100000100000000010000000001000000000000000001000000000100000000010001",
@@ -186,10 +186,20 @@ W  @DrawCompass()  E
                     break;
             }
 
+            UpdateVisibleMap();
             await Task.Delay(speed);
             waitMovement = false;
+
             StateHasChanged();
         }
+    }
+
+    protected void UpdateVisibleMap()
+    {
+        for (int x = curX - 3; x < curX + 3; x++)
+            for (int y = curY - 3; y < curY + 3; y++)
+                if (x>0 && y>0 && x < visiblemap.GetLength(0) && y < visiblemap.GetLength(1))
+                    visiblemap[x, y] = true;
     }
 
     protected override void OnAfterRender(bool firstRender)
@@ -220,7 +230,7 @@ W  @DrawCompass()  E
             scale = "1";
         else
         {
-            scale = (decimal.Divide(browser.Width,bodyWidth)).ToString().Replace(",",".");
+            scale = (decimal.Divide(browser.Width, bodyWidth)).ToString().Replace(",", ".");
         }
 
         return scale;
@@ -282,15 +292,19 @@ W  @DrawCompass()  E
 
         cellMap = new Cell[cells[0].Length, cells.GetLength(0)];
 
+        visiblemap = new bool[cells[0].Length, cells.GetLength(0)];
         curmap = new char[cells[0].Length, cells.GetLength(0)];
         for (int x = 0; x < cells[0].Length; x++)
             for (int y = 0; y < cells.GetLength(0); y++)
             {
                 curmap[x, y] = cells[y][x];
                 cellMap[x, y] = new Cell();
+                visiblemap[x, y] = false;
             }
 
         Render();
+        UpdateVisibleMap();
+        UpdateCellMap();
     }
 
     private void Log(string text)
@@ -450,37 +464,44 @@ W  @DrawCompass()  E
         {
             for (int x = curmap.GetLength(0) - 1; x >= 0; x--)
             {
-                if (curX == x && curY == y)
+                if (visiblemap[x, y])
                 {
-                    switch (curDir)
+                    if (curX == x && curY == y)
                     {
-                        case 0:
-                            cellMap[x, y].character = chPlayerS;
-                            break;
-                        case 1:
-                            cellMap[x, y].character = chPlayerW;
-                            break;
-                        case 2:
-                            cellMap[x, y].character = chPlayerN;
-                            break;
-                        case 3:
-                            cellMap[x, y].character = chPlayerE;
-                            break;
-                    }
-                    cellMap[x, y].cssClass = "mapplayer";
-                }
-                else
-                {
-                    if (curmap[x, y] == '1')
-                    {
-                        cellMap[x, y].character = chWall;
-                        cellMap[x, y].cssClass = "mapwall";
+                        switch (curDir)
+                        {
+                            case 0:
+                                cellMap[x, y].character = chPlayerS;
+                                break;
+                            case 1:
+                                cellMap[x, y].character = chPlayerW;
+                                break;
+                            case 2:
+                                cellMap[x, y].character = chPlayerN;
+                                break;
+                            case 3:
+                                cellMap[x, y].character = chPlayerE;
+                                break;
+                        }
+                        cellMap[x, y].cssClass = "mapplayer";
                     }
                     else
                     {
-                        cellMap[x, y].character = chCorridor;
-                        cellMap[x, y].cssClass = "mapcorridor";
+                        if (curmap[x, y] == '1')
+                        {
+                            cellMap[x, y].character = chWall;
+                            cellMap[x, y].cssClass = "mapwall";
+                        }
+                        else
+                        {
+                            cellMap[x, y].character = chCorridor;
+                            cellMap[x, y].cssClass = "mapcorridor";
+                        }
                     }
+                } else
+                {
+                    cellMap[x, y].character = chCorridor;
+                    cellMap[x, y].cssClass = "mapcorridor";
                 }
             }
         }
