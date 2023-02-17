@@ -10,7 +10,7 @@
 
 <PageTitle>BlazorDungeon3D</PageTitle>
 
-<div style="transform: scale(@CalculateTransformScale()); transform-origin: 0% 0% 0px;">
+<div style="width: 448px; height: 670px; transform: scale(@CalculateTransformScale()); transform-origin: 0% 0% 0px;">
 
     <div tabindex="0" @onkeydown="KeyDown" id="viewport" style="width: @(vpWidth)px; height: @(vpHeight)px;">
 
@@ -180,15 +180,10 @@ W  @DrawCompass()  E
 
     protected string CalculateTransformScale()
     {
-        int bodyWidth = 1000;
-        string scale = "";
+        float clientWidth = 500;
+        float clientHeight = 700;
 
-        if (browser.Width < bodyWidth)
-            scale = "1";
-        else
-        {
-            scale = (decimal.Divide(browser.Width, bodyWidth)).ToString().Replace(",", ".");
-        }
+        string scale = (1.0f / Math.Max(clientWidth / browser.Width, clientHeight / browser.Height)).ToString().Replace(",", ".");
 
         return scale;
     }
