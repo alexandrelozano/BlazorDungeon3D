@@ -238,7 +238,8 @@ W  @DrawCompass()  E
 
     protected override async Task OnInitializedAsync()
     {
-        Log(string.Format("New connection from IP:{0}", httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString()));
+        
+        Log(string.Format("New connection from IP:{0} User-Agent:{1}", httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString(), httpContextAccessor.HttpContext.Request.Headers["User-Agent"].ToString()));
 
         dicDispBlocks.Add("wallLside0", "none");
         dicDispBlocks.Add("wallLside1", "none");
