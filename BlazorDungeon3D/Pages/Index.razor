@@ -4,6 +4,7 @@
 @using BlazorPro.BlazorSize;
 @using Microsoft.Extensions.Configuration;
 @using Microsoft.AspNetCore.Http
+@using BlazorDungeon3D.Code
 @inject IHttpContextAccessor httpContextAccessor
 @page "/"
 
@@ -57,11 +58,11 @@ W  @DrawCompass()  E
     </table>
 
     <pre class="map" @onkeydown="KeyDown" style="width: @(vpWidth)px;">
-        @for (int y = cellMap.GetLength(1) - 1; y >= 0; y--)
+        @for (int y = map.mapCells.GetLength(1) - 1; y >= 0; y--)
         {
-            for (int x = cellMap.GetLength(0) - 1; x >= 0; x--)
+            for (int x = map.mapCells.GetLength(0) - 1; x >= 0; x--)
             {
-            <span class="@cellMap[x,y].cssClass">@cellMap[x,y].character</span>        
+            <span class="@map.mapCells[x,y].cssClass">@map.mapCells[x,y].character</span>        
             }
             @Environment.NewLine
         }
@@ -71,12 +72,6 @@ W  @DrawCompass()  E
 
 @code {
 
-    private class Cell
-    {
-        public string cssClass;
-        public string character { get; set; }
-    }
-
     BrowserWindowSize browser = new BrowserWindowSize();
 
     int curDir = 0;
@@ -84,46 +79,16 @@ W  @DrawCompass()  E
     int curY = 21;
     protected bool waitMovement;
     int speed = 200;    // Milliseconds between moves
-    int vpWidth = 448; //Viewport Width
-    int vpHeight = 272;//Viewport Height
+    int vpWidth = 448;  //Viewport Width
+    int vpHeight = 272; //Viewport Height
 
-    string chPlayerN = "";
-    string chPlayerS = "";
-    string chPlayerW = "";
-    string chPlayerE = "";
-    string chWall = "";
-    string chCorridor = "";
-    Cell[,] cellMap;
+    string remoteIpAddress;
+    string userAgent;
+    string logFile;
+
+    Map map;
 
     Dictionary<string, string> dicDispBlocks = new Dictionary<string, string>();
-
-    char[,] curmap;
-    bool[,] visiblemap;
-
-    string[] cells = {
-    "111111111111111111111111111111111111111111111111111111111111111111111",
-    "100000100000000010000000001000000000000000001000000000100000000010001",
-    "101110111010111011111110101111101111101111101010111110101111111010111",
-    "101010001010101000001000100000101000001010001010000010101000000010001",
-    "101011101010101111101011111110101011111010111111111010101011111111101",
-    "101010001010101000100010001000101000101000100000000010001000100000001",
-    "101010111110101010111111101011111110101011111011111111111110111011111",
-    "101000000000100010100000001000000000100000000010000000000010001000001",
-    "101011111111111010101011111111111111101111111111111110111011101111101",
-    "101000100000001010001000000010000000100010000000000010001000101000001",
-    "101111101111101011111111101110101110111010111111111011101111101011111",
-    "101000100000101000100000100000100010100010100000001000100000000010001",
-    "101010101111101110101111111111111011101110111110101110111111111110111",
-    "100010001000001010100000001000001000000010000010100010000000100010001",
-    "101111111011111010111110101011101111111011111010111011111110101011101",
-    "100010001010000000100010100010001000001000001010001000100010001010001",
-    "111011101010111111101010101111111011101111111011111010101111111010111",
-    "100010001010000000001000101000000010100000001000100010100010000010101",
-    "101110111011111111101111111011111110111111101110101110101010111110101",
-    "101000100010001000101000001010001000000000101000100010101010000010001",
-    "101010101110101010111011101010101110111110101011111010111011111011101",
-    "100010100000100010000000100000100000100000100000000010000000001000001",
-    "111111111111111111111111111111111111111111111111111111111111111111111" };
 
     private string DrawCompass()
     {
@@ -186,20 +151,12 @@ W  @DrawCompass()  E
                     break;
             }
 
-            UpdateVisibleMap();
+            map.UpdateVisibleMap(curX, curY);
             await Task.Delay(speed);
             waitMovement = false;
 
             StateHasChanged();
         }
-    }
-
-    protected void UpdateVisibleMap()
-    {
-        for (int x = curX - 3; x < curX + 3; x++)
-            for (int y = curY - 3; y < curY + 3; y++)
-                if (x>0 && y>0 && x < visiblemap.GetLength(0) && y < visiblemap.GetLength(1))
-                    visiblemap[x, y] = true;
     }
 
     protected override void OnAfterRender(bool firstRender)
@@ -238,8 +195,11 @@ W  @DrawCompass()  E
 
     protected override async Task OnInitializedAsync()
     {
-        
-        Log(string.Format("New connection from IP:{0} User-Agent:{1}", httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString(), httpContextAccessor.HttpContext.Request.Headers["User-Agent"].ToString()));
+        remoteIpAddress = httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
+        userAgent = httpContextAccessor.HttpContext.Request.Headers["User-Agent"].ToString();
+        logFile = configuration.GetValue<string>("BlazorDungeon3D:LogFile");
+
+        Logging.Log(string.Format("New connection from IP:{0} User-Agent:{1}", remoteIpAddress, userAgent), logFile);
 
         dicDispBlocks.Add("wallLside0", "none");
         dicDispBlocks.Add("wallLside1", "none");
@@ -284,44 +244,11 @@ W  @DrawCompass()  E
         dicDispBlocks.Add("wallFront3", "none");
         dicDispBlocks.Add("wallSide3_2", "none");
 
-        chPlayerN = Char.ConvertFromUtf32(11165);
-        chPlayerS = Char.ConvertFromUtf32(11167);
-        chPlayerW = Char.ConvertFromUtf32(11164);
-        chPlayerE = Char.ConvertFromUtf32(11166);
-        chWall = Char.ConvertFromUtf32(1047550);
-        chCorridor = " ";
+        map = new Map();
 
-        cellMap = new Cell[cells[0].Length, cells.GetLength(0)];
-
-        visiblemap = new bool[cells[0].Length, cells.GetLength(0)];
-        curmap = new char[cells[0].Length, cells.GetLength(0)];
-        for (int x = 0; x < cells[0].Length; x++)
-            for (int y = 0; y < cells.GetLength(0); y++)
-            {
-                curmap[x, y] = cells[y][x];
-                cellMap[x, y] = new Cell();
-                visiblemap[x, y] = false;
-            }
-
-        Render();
-        UpdateVisibleMap();
-        UpdateCellMap();
-    }
-
-    private void Log(string text)
-    {
-        try
-        {
-            string logFile = configuration.GetValue<string>("BlazorDungeon3D:LogFile");
-            if (Directory.Exists(Path.GetDirectoryName(logFile)))
-            {
-                string line = String.Format("{0} {1} {2}", DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss "), text, Environment.NewLine);
-                System.IO.File.AppendAllText(logFile, line);
-            }
-        }
-        catch (Exception e)
-        {
-        }
+        UpdateViewport();
+        map.UpdateVisibleMap(curX, curY);
+        map.UpdateCellMap(curX, curY, curDir);
     }
 
     private void GoForward()
@@ -329,16 +256,16 @@ W  @DrawCompass()  E
         switch (curDir)
         {
             case 0:
-                if (curmap[curX, curY - 1] == '0') curY--;
+                if (map.mapCells[curX, curY - 1].type == '0') curY--;
                 break;
             case 1:
-                if (curmap[curX + 1, curY] == '0') curX++;
+                if (map.mapCells[curX + 1, curY].type == '0') curX++;
                 break;
             case 2:
-                if (curmap[curX, curY + 1] == '0') curY++;
+                if (map.mapCells[curX, curY + 1].type == '0') curY++;
                 break;
             case 3:
-                if (curmap[curX - 1, curY] == '0') curX--;
+                if (map.mapCells[curX - 1, curY].type == '0') curX--;
                 break;
         }
 
@@ -350,16 +277,16 @@ W  @DrawCompass()  E
         switch (curDir)
         {
             case 0:
-                if (curmap[curX, curY + 1] == '0') curY++;
+                if (map.mapCells[curX, curY + 1].type == '0') curY++;
                 break;
             case 1:
-                if (curmap[curX - 1, curY] == '0') curX--;
+                if (map.mapCells[curX - 1, curY].type == '0') curX--;
                 break;
             case 2:
-                if (curmap[curX, curY - 1] == '0') curY--;
+                if (map.mapCells[curX, curY - 1].type == '0') curY--;
                 break;
             case 3:
-                if (curmap[curX + 1, curY] == '0') curX++;
+                if (map.mapCells[curX + 1, curY].type == '0') curX++;
                 break;
         }
 
@@ -371,16 +298,16 @@ W  @DrawCompass()  E
         switch (curDir)
         {
             case 0:
-                if (curmap[curX - 1, curY] == '0') curX--;
+                if (map.mapCells[curX - 1, curY].type == '0') curX--;
                 break;
             case 1:
-                if (curmap[curX, curY - 1] == '0') curY--;
+                if (map.mapCells[curX, curY - 1].type == '0') curY--;
                 break;
             case 2:
-                if (curmap[curX + 1, curY] == '0') curX++;
+                if (map.mapCells[curX + 1, curY].type == '0') curX++;
                 break;
             case 3:
-                if (curmap[curX, curY + 1] == '0') curY++;
+                if (map.mapCells[curX, curY + 1].type == '0') curY++;
                 break;
         }
 
@@ -392,16 +319,16 @@ W  @DrawCompass()  E
         switch (curDir)
         {
             case 0:
-                if (curmap[curX + 1, curY] == '0') curX++;
+                if (map.mapCells[curX + 1, curY].type == '0') curX++;
                 break;
             case 1:
-                if (curmap[curX, curY + 1] == '0') curY++;
+                if (map.mapCells[curX, curY + 1].type == '0') curY++;
                 break;
             case 2:
-                if (curmap[curX - 1, curY] == '0') curX--;
+                if (map.mapCells[curX - 1, curY].type == '0') curX--;
                 break;
             case 3:
-                if (curmap[curX, curY - 1] == '0') curY--;
+                if (map.mapCells[curX, curY - 1].type == '0') curY--;
                 break;
         }
 
@@ -440,9 +367,9 @@ W  @DrawCompass()  E
 
     private void checkcell(int x, int y, string xclass)
     {
-        if (x >= 0 && x < curmap.GetLength(0) && y >= 0 && y < curmap.GetLength(1))
+        if (x >= 0 && x < map.mapCells.GetLength(0) && y >= 0 && y < map.mapCells.GetLength(1))
         {
-            if (curmap[x, y] == '1')
+            if (map.mapCells[x, y].type == '1')
             {
                 disblock(xclass);
             }
@@ -456,56 +383,7 @@ W  @DrawCompass()  E
     private void Render()
     {
         UpdateViewport();
-        UpdateCellMap();
-    }
-
-    private void UpdateCellMap()
-    {
-        for (int y = curmap.GetLength(1) - 1; y >= 0; y--)
-        {
-            for (int x = curmap.GetLength(0) - 1; x >= 0; x--)
-            {
-                if (visiblemap[x, y])
-                {
-                    if (curX == x && curY == y)
-                    {
-                        switch (curDir)
-                        {
-                            case 0:
-                                cellMap[x, y].character = chPlayerS;
-                                break;
-                            case 1:
-                                cellMap[x, y].character = chPlayerW;
-                                break;
-                            case 2:
-                                cellMap[x, y].character = chPlayerN;
-                                break;
-                            case 3:
-                                cellMap[x, y].character = chPlayerE;
-                                break;
-                        }
-                        cellMap[x, y].cssClass = "mapplayer";
-                    }
-                    else
-                    {
-                        if (curmap[x, y] == '1')
-                        {
-                            cellMap[x, y].character = chWall;
-                            cellMap[x, y].cssClass = "mapwall";
-                        }
-                        else
-                        {
-                            cellMap[x, y].character = chCorridor;
-                            cellMap[x, y].cssClass = "mapcorridor";
-                        }
-                    }
-                } else
-                {
-                    cellMap[x, y].character = chCorridor;
-                    cellMap[x, y].cssClass = "mapcorridor";
-                }
-            }
-        }
+        map.UpdateCellMap(curX, curY, curDir);
     }
 
     private void UpdateViewport()
