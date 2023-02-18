@@ -12,57 +12,57 @@
 
 <div style="width: 448px; height: 670px; transform: scale(@CalculateTransformScale()); transform-origin: 0% 0% 0px;">
 
-    <div tabindex="0" @onkeydown="KeyDown" id="viewport" style="width: @(vpWidth)px; height: @(vpHeight)px;">
+    <div tabindex="0" @onkeydown="KeyDown" id="viewport" style="width: @(game.viewport.vpWidth)px; height: @(game.viewport.vpHeight)px;">
 
         <div id="overLay"></div>
 
         <div class="roof"></div>
         <div class="floor"></div>
 
-        @foreach (KeyValuePair<string, string> kvp in dicDispBlocks)
+        @foreach (KeyValuePair<string, string> kvp in game.viewport.dicDispBlocks)
         {
             <div class="@kvp.Key" style="display: @kvp.Value"></div>
         }
 
     </div>
 
-    <table class="buttonstable" @onkeydown="KeyDown" style="width: @(vpWidth)px;">
+    <table class="buttonstable" @onkeydown="KeyDown" style="width: @(game.viewport.vpWidth)px;">
         <tr>
             <td rowspan="2" width="25%">
                 <pre>   N
-W  @DrawCompass()  E
+W  @game.compass.Draw(game.player.curDir)  E
    S
                 </pre>
             </td>
             <td>
-                <input id="Q" type="button" disabled="@commandsDisabled()" value="Q @Char.ConvertFromUtf32(8630)" class="buttonsmovement" @onclick="@(e => Move("KeyQ"))" />
+                <input id="Q" type="button" disabled="@game.waitMovement" value="Q @Char.ConvertFromUtf32(8630)" class="buttonsmovement" @onclick="@(e => KeyDown(new KeyboardEventArgs { Code = "KeyQ" }))" />
             </td>
             <td>
-                <input id="W" type="button" disabled="@commandsDisabled()" value="W @Char.ConvertFromUtf32(8593)" class="buttonsmovement" @onclick="@(e => Move("KeyW"))" />
+                <input id="W" type="button" disabled="@game.waitMovement" value="W @Char.ConvertFromUtf32(8593)" class="buttonsmovement" @onclick="@(e => KeyDown(new KeyboardEventArgs { Code = "KeyW" }))" />
             </td>
             <td>
-                <input id="E" type="button" disabled="@commandsDisabled()" value="E @Char.ConvertFromUtf32(8631)" class="buttonsmovement" @onclick="@(e => Move("KeyE"))" />
+                <input id="E" type="button" disabled="@game.waitMovement" value="E @Char.ConvertFromUtf32(8631)" class="buttonsmovement" @onclick="@(e => KeyDown(new KeyboardEventArgs { Code = "KeyE" }))" />
             </td>
         </tr>
         <tr>
             <td>
-                <input id="A" type="button" disabled="@commandsDisabled()" value="A @Char.ConvertFromUtf32(8592)" class="buttonsmovement" @onclick="@(e => Move("KeyA"))" />
+                <input id="A" type="button" disabled="@game.waitMovement" value="A @Char.ConvertFromUtf32(8592)" class="buttonsmovement" @onclick="@(e => KeyDown(new KeyboardEventArgs { Code = "KeyA" }))" />
             </td>
             <td>
-                <input id="S" type="button" disabled="@commandsDisabled()" value="S @Char.ConvertFromUtf32(8595)" class="buttonsmovement" @onclick="@(e => Move("KeyS"))" />
+                <input id="S" type="button" disabled="@game.waitMovement" value="S @Char.ConvertFromUtf32(8595)" class="buttonsmovement" @onclick="@(e => KeyDown(new KeyboardEventArgs { Code = "KeyS" }))" />
             </td>
             <td>
-                <input id="D" type="button" disabled="@commandsDisabled()" value="D @Char.ConvertFromUtf32(8594)" class="buttonsmovement" @onclick="@(e => Move("KeyD"))" />
+                <input id="D" type="button" disabled="@game.waitMovement" value="D @Char.ConvertFromUtf32(8594)" class="buttonsmovement" @onclick="@(e => KeyDown(new KeyboardEventArgs { Code = "KeyD" }))" />
             </td>
         </tr>
     </table>
 
-    <pre class="map" @onkeydown="KeyDown" style="width: @(vpWidth)px;">
-        @for (int y = map.mapCells.GetLength(1) - 1; y >= 0; y--)
+    <pre class="map" @onkeydown="KeyDown" style="width: @(game.viewport.vpWidth)px;">
+        @for (int y = game.map.mapCells.GetLength(1) - 1; y >= 0; y--)
         {
-            for (int x = map.mapCells.GetLength(0) - 1; x >= 0; x--)
+            for (int x = game.map.mapCells.GetLength(0) - 1; x >= 0; x--)
             {
-            <span class="@map.mapCells[x,y].cssClass">@map.mapCells[x,y].character</span>        
+            <span class="@game.map.mapCells[x,y].cssClass">@game.map.mapCells[x,y].character</span>        
             }
             @Environment.NewLine
         }
@@ -72,96 +72,30 @@ W  @DrawCompass()  E
 
 @code {
 
+    Game game;
+    Logging logging;
     BrowserWindowSize browser = new BrowserWindowSize();
 
-    int curDir = 0;
-    int curX = 66;
-    int curY = 21;
-    protected bool waitMovement;
-    int speed = 200;    // Milliseconds between moves
-    int vpWidth = 448;  //Viewport Width
-    int vpHeight = 272; //Viewport Height
-
-    string remoteIpAddress;
-    string userAgent;
-    string logFile;
-
-    Map map;
-
-    Dictionary<string, string> dicDispBlocks = new Dictionary<string, string>();
-
-    private string DrawCompass()
+    protected override async Task OnInitializedAsync()
     {
-        string ret = "";
-
-        switch (curDir)
-        {
-            case 0:
-                ret = Char.ConvertFromUtf32(8681);
-                break;
-            case 1:
-                ret = Char.ConvertFromUtf32(8678);
-                break;
-            case 2:
-                ret = Char.ConvertFromUtf32(8679);
-                break;
-            case 3:
-                ret = Char.ConvertFromUtf32(8680);
-                break;
-        }
-
-        return ret;
-    }
-
-    protected bool commandsDisabled()
-    {
-        return waitMovement;
-    }
-
-    protected async void KeyDown(KeyboardEventArgs e)
-    {
-        Move(e.Code);
-    }
-
-    protected async void Move(string code)
-    {
-        if (!waitMovement)
-        {
-            waitMovement = true;
-
-            switch (code)
+        logging = new Logging()
             {
-                case "KeyW":
-                    GoForward();
-                    break;
-                case "KeyS":
-                    GoBack();
-                    break;
-                case "KeyA":
-                    GoLeft();
-                    break;
-                case "KeyD":
-                    GoRight();
-                    break;
-                case "KeyQ":
-                    TurnLeft();
-                    break;
-                case "KeyE":
-                    TurnRight();
-                    break;
-            }
+                logFile = configuration.GetValue<string>("BlazorDungeon3D:LogFile"),
+                remoteIpAddress = httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString(),
+                userAgent = httpContextAccessor.HttpContext.Request.Headers["User-Agent"].ToString()
+            };
 
-            map.UpdateVisibleMap(curX, curY);
-            await Task.Delay(speed);
-            waitMovement = false;
+        logging.Log(string.Format("New connection from IP:{0} User-Agent:{1}", logging.remoteIpAddress, logging.userAgent), logging.logFile);
 
-            StateHasChanged();
-        }
+        game = new Game();
+
+        game.viewport.UpdateViewport(game.player, game.map);
+        game.map.UpdateVisibleMap(game.player.curX, game.player.curY);
+        game.map.UpdateCellMap(game.player.curX, game.player.curY, game.player.curDir);
     }
 
     protected override void OnAfterRender(bool firstRender)
     {
-
         if (firstRender)
         {
             // Subscribe to the OnResized event. This will do work when the browser is resized.
@@ -169,7 +103,19 @@ W  @DrawCompass()  E
         }
     }
 
-    async void WindowResized(object _, BrowserWindowSize window)
+    protected async void KeyDown(KeyboardEventArgs e)
+    {
+        if (!game.waitMovement)
+        {
+            game.waitMovement = true;
+            game.Move(e.Code);
+            await Task.Delay(game.speed);
+            game.waitMovement = false;
+            StateHasChanged();
+        }
+    }
+
+    protected async void WindowResized(object _, BrowserWindowSize window)
     {
         // Get the browsers's width / height
         browser = window;
@@ -186,287 +132,5 @@ W  @DrawCompass()  E
         string scale = (1.0f / Math.Max(clientWidth / browser.Width, clientHeight / browser.Height)).ToString().Replace(",", ".");
 
         return scale;
-    }
-
-    protected override async Task OnInitializedAsync()
-    {
-        remoteIpAddress = httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
-        userAgent = httpContextAccessor.HttpContext.Request.Headers["User-Agent"].ToString();
-        logFile = configuration.GetValue<string>("BlazorDungeon3D:LogFile");
-
-        Logging.Log(string.Format("New connection from IP:{0} User-Agent:{1}", remoteIpAddress, userAgent), logFile);
-
-        dicDispBlocks.Add("wallLside0", "none");
-        dicDispBlocks.Add("wallLside1", "none");
-        dicDispBlocks.Add("wallLside2", "none");
-        dicDispBlocks.Add("wallLside3", "none");
-        dicDispBlocks.Add("wallLside0_walldecor", "none");
-        dicDispBlocks.Add("wallLside1_walldecor", "none");
-
-        dicDispBlocks.Add("wallRside0", "none");
-        dicDispBlocks.Add("wallRside1", "none");
-        dicDispBlocks.Add("wallRside2", "none");
-        dicDispBlocks.Add("wallRside3", "none");
-        dicDispBlocks.Add("wallRside0_walldecor", "none");
-        dicDispBlocks.Add("wallRside1_walldecor", "none");
-
-        dicDispBlocks.Add("wallSide1_1", "none");
-        dicDispBlocks.Add("doorSide1_1", "none");
-        dicDispBlocks.Add("doorSide1_1_inner", "none");
-        dicDispBlocks.Add("doorSide1_2", "none");
-        dicDispBlocks.Add("doorSide1_2_inner", "none");
-
-        dicDispBlocks.Add("wallFront1", "none");
-        dicDispBlocks.Add("wallfrontTEXT", "none");
-        dicDispBlocks.Add("doorFront1", "none");
-        dicDispBlocks.Add("doorFront1_inner", "none");
-
-        dicDispBlocks.Add("doorFront1_button", "none");
-        dicDispBlocks.Add("wallSide1_2", "none");
-
-        dicDispBlocks.Add("wallSide2_1", "none");
-        dicDispBlocks.Add("doorSide2_1", "none");
-        dicDispBlocks.Add("doorSide2_1_inner", "none");
-        dicDispBlocks.Add("wallFront2", "none");
-        dicDispBlocks.Add("wallFront2_walldecor", "none");
-        dicDispBlocks.Add("doorFront2", "none");
-        dicDispBlocks.Add("doorFront2_inner", "none");
-        dicDispBlocks.Add("wallSide2_2", "none");
-        dicDispBlocks.Add("doorSide2_2", "none");
-        dicDispBlocks.Add("doorSide2_2_inner", "none");
-
-        dicDispBlocks.Add("wallSide3_1", "none");
-        dicDispBlocks.Add("wallFront3", "none");
-        dicDispBlocks.Add("wallSide3_2", "none");
-
-        map = new Map();
-
-        UpdateViewport();
-        map.UpdateVisibleMap(curX, curY);
-        map.UpdateCellMap(curX, curY, curDir);
-    }
-
-    private void GoForward()
-    {
-        switch (curDir)
-        {
-            case 0:
-                if (map.mapCells[curX, curY - 1].type == '0') curY--;
-                break;
-            case 1:
-                if (map.mapCells[curX + 1, curY].type == '0') curX++;
-                break;
-            case 2:
-                if (map.mapCells[curX, curY + 1].type == '0') curY++;
-                break;
-            case 3:
-                if (map.mapCells[curX - 1, curY].type == '0') curX--;
-                break;
-        }
-
-        Render();
-    }
-
-    private void GoBack()
-    {
-        switch (curDir)
-        {
-            case 0:
-                if (map.mapCells[curX, curY + 1].type == '0') curY++;
-                break;
-            case 1:
-                if (map.mapCells[curX - 1, curY].type == '0') curX--;
-                break;
-            case 2:
-                if (map.mapCells[curX, curY - 1].type == '0') curY--;
-                break;
-            case 3:
-                if (map.mapCells[curX + 1, curY].type == '0') curX++;
-                break;
-        }
-
-        Render();
-    }
-
-    private void GoLeft()
-    {
-        switch (curDir)
-        {
-            case 0:
-                if (map.mapCells[curX - 1, curY].type == '0') curX--;
-                break;
-            case 1:
-                if (map.mapCells[curX, curY - 1].type == '0') curY--;
-                break;
-            case 2:
-                if (map.mapCells[curX + 1, curY].type == '0') curX++;
-                break;
-            case 3:
-                if (map.mapCells[curX, curY + 1].type == '0') curY++;
-                break;
-        }
-
-        Render();
-    }
-
-    private void GoRight()
-    {
-        switch (curDir)
-        {
-            case 0:
-                if (map.mapCells[curX + 1, curY].type == '0') curX++;
-                break;
-            case 1:
-                if (map.mapCells[curX, curY + 1].type == '0') curY++;
-                break;
-            case 2:
-                if (map.mapCells[curX - 1, curY].type == '0') curX--;
-                break;
-            case 3:
-                if (map.mapCells[curX, curY - 1].type == '0') curY--;
-                break;
-        }
-
-        Render();
-    }
-
-    private void TurnLeft()
-    {
-        if (curDir > 0)
-            curDir--;
-        else
-            curDir = 3;
-
-        Render();
-    }
-
-    private void TurnRight()
-    {
-        if (curDir < 3)
-            curDir++;
-        else
-            curDir = 0;
-
-        Render();
-    }
-
-    private void disblock(string xclass)
-    {
-        dicDispBlocks[xclass] = "block";
-    }
-
-    private void hideblock(string xclass)
-    {
-        dicDispBlocks[xclass] = "none";
-    }
-
-    private void checkcell(int x, int y, string xclass)
-    {
-        if (x >= 0 && x < map.mapCells.GetLength(0) && y >= 0 && y < map.mapCells.GetLength(1))
-        {
-            if (map.mapCells[x, y].type == '1')
-            {
-                disblock(xclass);
-            }
-            else
-            {
-                hideblock(xclass);
-            }
-        }
-    }
-
-    private void Render()
-    {
-        UpdateViewport();
-        map.UpdateCellMap(curX, curY, curDir);
-    }
-
-    private void UpdateViewport()
-    {
-        switch (curDir)
-        {
-            case 0:
-                checkcell(curX - 1, curY, "wallLside0");
-                checkcell(curX + 1, curY, "wallRside0");
-                checkcell(curX - 1, curY - 1, "wallLside1");
-                checkcell(curX + 1, curY - 1, "wallRside1");
-                checkcell(curX - 1, curY - 2, "wallLside2");
-                checkcell(curX + 1, curY - 2, "wallRside2");
-                checkcell(curX - 1, curY - 3, "wallLside3");
-                checkcell(curX + 1, curY - 3, "wallRside3");
-                checkcell(curX, curY - 1, "wallFront1");
-                checkcell(curX - 1, curY - 1, "wallSide1_1");
-                checkcell(curX + 1, curY - 1, "wallSide1_2");
-                checkcell(curX, curY - 2, "wallFront2");
-                checkcell(curX - 1, curY - 2, "wallSide2_1");
-                checkcell(curX + 1, curY - 2, "wallSide2_2");
-                checkcell(curX, curY - 3, "wallFront3");
-                checkcell(curX - 1, curY - 3, "wallSide3_1");
-                checkcell(curX + 1, curY - 3, "wallSide3_2");
-                checkcell(curX + 1, curY - 3, "wallSide3_2");
-                break;
-
-            case 1:
-                checkcell(curX, curY - 1, "wallLside0");
-                checkcell(curX, curY + 1, "wallRside0");
-                checkcell(curX + 1, curY - 1, "wallLside1");
-                checkcell(curX + 1, curY + 1, "wallRside1");
-                checkcell(curX + 2, curY - 1, "wallLside2");
-                checkcell(curX + 2, curY + 1, "wallRside2");
-                checkcell(curX + 3, curY - 1, "wallLside3");
-                checkcell(curX + 3, curY + 1, "wallRside3");
-                checkcell(curX + 1, curY, "wallFront1");
-                checkcell(curX + 1, curY - 1, "wallSide1_1");
-                checkcell(curX + 1, curY, "wallFront1");
-                checkcell(curX + 1, curY + 1, "wallSide1_2");
-                checkcell(curX + 2, curY, "wallFront2");
-                checkcell(curX + 2, curY - 1, "wallSide2_1");
-                checkcell(curX + 2, curY + 1, "wallSide2_2");
-                checkcell(curX + 3, curY, "wallFront3");
-                checkcell(curX + 3, curY - 1, "wallSide3_1");
-                checkcell(curX + 3, curY + 1, "wallSide3_2");
-                break;
-
-            case 2:
-                checkcell(curX + 1, curY, "wallLside0");
-                checkcell(curX - 1, curY, "wallRside0");
-                checkcell(curX + 1, curY + 1, "wallLside1");
-                checkcell(curX - 1, curY + 1, "wallRside1");
-                checkcell(curX + 1, curY + 2, "wallLside2");
-                checkcell(curX - 1, curY + 2, "wallRside2");
-                checkcell(curX + 1, curY + 3, "wallLside3");
-                checkcell(curX - 1, curY + 3, "wallRside3");
-                checkcell(curX, curY + 1, "wallFront1");
-                checkcell(curX + 1, curY + 1, "wallSide1_1");
-                checkcell(curX - 1, curY + 1, "wallSide1_2");
-                checkcell(curX, curY + 2, "wallFront2");
-                checkcell(curX + 1, curY + 2, "wallSide2_1");
-                checkcell(curX - 1, curY + 2, "wallSide2_2");
-                checkcell(curX, curY + 3, "wallFront3");
-                checkcell(curX + 1, curY + 3, "wallSide3_1");
-                checkcell(curX - 1, curY + 3, "wallSide3_2");
-                break;
-
-            case 3:
-                checkcell(curX, curY + 1, "wallLside0");
-                checkcell(curX, curY - 1, "wallRside0");
-                checkcell(curX - 1, curY + 1, "wallLside1");
-                checkcell(curX - 1, curY - 1, "wallRside1");
-                checkcell(curX - 2, curY + 1, "wallLside2");
-                checkcell(curX - 2, curY - 1, "wallRside2");
-                checkcell(curX - 3, curY + 1, "wallLside3");
-                checkcell(curX - 3, curY - 1, "wallRside3");
-                checkcell(curX - 1, curY, "wallFront1");
-                checkcell(curX - 1, curY + 1, "wallSide1_1");
-                checkcell(curX - 1, curY - 1, "wallSide1_2");
-                checkcell(curX - 2, curY, "wallFront2");
-                checkcell(curX - 2, curY + 1, "wallSide2_1");
-                checkcell(curX - 2, curY - 1, "wallSide2_2");
-                checkcell(curX - 3, curY, "wallFront3");
-                checkcell(curX - 3, curY + 1, "wallSide3_1");
-                checkcell(curX - 3, curY - 1, "wallSide3_2");
-                checkcell(curX - 3, curY - 1, "wallSide3_2");
-                break;
-        }
     }
 }
