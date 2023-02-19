@@ -8,7 +8,7 @@
 
         public Player()
         {
-            curX = 66;
+            curX = 1;
             curY = 21;
             curDir = 0;
         }

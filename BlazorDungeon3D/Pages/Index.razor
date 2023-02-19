@@ -31,7 +31,8 @@
             <td rowspan="2" width="25%">
                 <pre>   N
 W  @game.compass.Draw(game.player.curDir)  E
-   S
+   S    
+X:@game.player.curX Y:@game.player.curY Dir:@game.player.curDir
                 </pre>
             </td>
             <td>
@@ -60,7 +61,7 @@ W  @game.compass.Draw(game.player.curDir)  E
     <pre class="map" @onkeydown="KeyDown" style="width: @(game.viewport.vpWidth)px;">
         @for (int y = game.map.mapCells.GetLength(1) - 1; y >= 0; y--)
         {
-            for (int x = game.map.mapCells.GetLength(0) - 1; x >= 0; x--)
+            for (int x = 0; x < game.map.mapCells.GetLength(0); x++)
             {
             <span class="@game.map.mapCells[x,y].cssClass">@game.map.mapCells[x,y].character</span>        
             }

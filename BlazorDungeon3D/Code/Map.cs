@@ -51,7 +51,7 @@
                 for (int y = 0; y < txtCells.GetLength(0); y++)
                 {
                     mapCells[x, y] = new Cell();
-                    mapCells[x, y].type = txtCells[y][x];
+                    mapCells[x, y].type = txtCells[txtCells.GetLength(0) - y - 1][x];
                     mapCells[x, y].visible = false;
                 }
         }
@@ -60,7 +60,7 @@
         {
             for (int x = curX - 3; x < curX + 3; x++)
                 for (int y = curY - 3; y < curY + 3; y++)
-                    if (x > 0 && y > 0 && x < mapCells.GetLength(0) && y < mapCells.GetLength(1))
+                    if (x >= 0 && y >= 0 && x < mapCells.GetLength(0) && y < mapCells.GetLength(1))
                         mapCells[x, y].visible = true;
         }
 
@@ -68,7 +68,7 @@
         {
             for (int y = mapCells.GetLength(1) - 1; y >= 0; y--)
             {
-                for (int x = mapCells.GetLength(0) - 1; x >= 0; x--)
+                for (int x = 0; x < mapCells.GetLength(0); x++)
                 {
                     if (mapCells[x, y].visible)
                     {

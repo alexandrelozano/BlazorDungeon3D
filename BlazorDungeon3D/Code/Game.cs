@@ -59,13 +59,13 @@
                     if (map.mapCells[player.curX, player.curY - 1].type == '0') player.curY--;
                     break;
                 case 1:
-                    if (map.mapCells[player.curX + 1, player.curY].type == '0') player.curX++;
+                    if (map.mapCells[player.curX - 1, player.curY].type == '0') player.curX--;
                     break;
                 case 2:
                     if (map.mapCells[player.curX, player.curY + 1].type == '0') player.curY++;
                     break;
                 case 3:
-                    if (map.mapCells[player.curX - 1, player.curY].type == '0') player.curX--;
+                    if (map.mapCells[player.curX + 1, player.curY].type == '0') player.curX++;
                     break;
             }
 
@@ -80,13 +80,13 @@
                     if (map.mapCells[player.curX, player.curY + 1].type == '0') player.curY++;
                     break;
                 case 1:
-                    if (map.mapCells[player.curX - 1, player.curY].type == '0') player.curX--;
+                    if (map.mapCells[player.curX + 1, player.curY].type == '0') player.curX++;
                     break;
                 case 2:
                     if (map.mapCells[player.curX, player.curY - 1].type == '0') player.curY--;
                     break;
                 case 3:
-                    if (map.mapCells[player.curX + 1, player.curY].type == '0') player.curX++;
+                    if (map.mapCells[player.curX - 1, player.curY].type == '0') player.curX--;
                     break;
             }
 
@@ -98,13 +98,13 @@
             switch (player.curDir)
             {
                 case 0:
-                    if (map.mapCells[player.curX - 1, player.curY].type == '0') player.curX--;
+                    if (map.mapCells[player.curX + 1, player.curY].type == '0') player.curX++;
                     break;
                 case 1:
                     if (map.mapCells[player.curX, player.curY - 1].type == '0') player.curY--;
                     break;
                 case 2:
-                    if (map.mapCells[player.curX + 1, player.curY].type == '0') player.curX++;
+                    if (map.mapCells[player.curX - 1, player.curY].type == '0') player.curX--;
                     break;
                 case 3:
                     if (map.mapCells[player.curX, player.curY + 1].type == '0') player.curY++;
@@ -119,13 +119,13 @@
             switch (player.curDir)
             {
                 case 0:
-                    if (map.mapCells[player.curX + 1, player.curY].type == '0') player.curX++;
+                    if (map.mapCells[player.curX - 1, player.curY].type == '0') player.curX--;
                     break;
                 case 1:
                     if (map.mapCells[player.curX, player.curY + 1].type == '0') player.curY++;
                     break;
                 case 2:
-                    if (map.mapCells[player.curX - 1, player.curY].type == '0') player.curX--;
+                    if (map.mapCells[player.curX + 1, player.curY].type == '0') player.curX++;
                     break;
                 case 3:
                     if (map.mapCells[player.curX, player.curY - 1].type == '0') player.curY--;
