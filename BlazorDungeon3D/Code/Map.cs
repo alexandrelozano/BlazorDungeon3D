@@ -2,7 +2,7 @@
 {
     public class Map
     {
-        public MapCell[,] mapCells;
+        public Cell[,] mapCells;
 
         string chPlayerN = "";
         string chPlayerS = "";
@@ -45,12 +45,12 @@
             chWall = Char.ConvertFromUtf32(1047550);
             chCorridor = " ";
 
-            mapCells =  new MapCell[txtCells[0].Length, txtCells.GetLength(0)];
+            mapCells =  new Cell[txtCells[0].Length, txtCells.GetLength(0)];
 
             for (int x = 0; x < txtCells[0].Length; x++)
                 for (int y = 0; y < txtCells.GetLength(0); y++)
                 {
-                    mapCells[x, y] = new MapCell();
+                    mapCells[x, y] = new Cell();
                     mapCells[x, y].type = txtCells[y][x];
                     mapCells[x, y].visible = false;
                 }

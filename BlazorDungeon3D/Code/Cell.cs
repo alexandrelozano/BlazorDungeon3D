@@ -1,6 +1,6 @@
 ﻿namespace BlazorDungeon3D.Code
 {
-    public class MapCell
+    public class Cell
     {
         public char type;           // 0 Corridor  1 Wall
         public string cssClass;
