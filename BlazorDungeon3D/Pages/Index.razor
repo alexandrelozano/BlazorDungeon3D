@@ -10,9 +10,9 @@
 
 <PageTitle>BlazorDungeon3D</PageTitle>
 
-<div style="width: 448px; height: 670px; transform: scale(@CalculateTransformScale()); transform-origin: 0% 0% 0px;">
+<div class="mainscreen" @onkeydown="KeyDown" style="transform: scale(@CalculateTransformScale());">
 
-    <div tabindex="0" @onkeydown="KeyDown" id="viewport" style="width: @(game.viewport.vpWidth)px; height: @(game.viewport.vpHeight)px;">
+    <div tabindex="0" id="viewport" style="width: @(game.viewport.vpWidth)px; height: @(game.viewport.vpHeight)px;">
 
         <div id="overLay"></div>
 
@@ -26,48 +26,35 @@
 
     </div>
 
-    <table class="buttonstable" @onkeydown="KeyDown" style="width: @(game.viewport.vpWidth)px;">
-        <tr>
-            <td rowspan="2" width="25%">
-                <pre>   N
+    <div id="commandsarea">
+        <div id="turnLeft" class="clickable" style="cursor: pointer; background-position: 0px 0px;" @onclick="@(e => KeyDown(new KeyboardEventArgs { Code = "KeyQ" }))"></div>
+        <div id="moveUp" class="clickable" style="cursor: pointer; background-position: 0px 0px;" @onclick="@(e => KeyDown(new KeyboardEventArgs { Code = "KeyW" }))"></div>
+        <div id="turnRight" class="clickable" style="cursor: pointer; background-position: 0px 0px;" @onclick="@(e => KeyDown(new KeyboardEventArgs { Code = "KeyE" }))"></div>
+        <div id="moveLeft" class="clickable" style="cursor: pointer; background-position: 0px 0px;" @onclick="@(e => KeyDown(new KeyboardEventArgs { Code = "KeyA" }))"></div>
+        <div id="moveDown" class="clickable" style="cursor: pointer; background-position: 0px 0px;" @onclick="@(e => KeyDown(new KeyboardEventArgs { Code = "KeyS" }))"> </div>
+        <div id="moveRight" class="clickable" style="cursor: pointer; background-position: 0px 0px;" @onclick="@(e => KeyDown(new KeyboardEventArgs { Code = "KeyD" }))"></div>
+    </div>
+
+    <div id="infoarea">
+        <pre>   N
 W  @game.compass.Draw(game.player.curDir)  E
    S    
 X:@game.player.curX Y:@game.player.curY Dir:@game.player.curDir
-                </pre>
-            </td>
-            <td>
-                <input id="Q" type="button" disabled="@game.waitMovement" value="Q @Char.ConvertFromUtf32(8630)" class="buttonsmovement" @onclick="@(e => KeyDown(new KeyboardEventArgs { Code = "KeyQ" }))" />
-            </td>
-            <td>
-                <input id="W" type="button" disabled="@game.waitMovement" value="W @Char.ConvertFromUtf32(8593)" class="buttonsmovement" @onclick="@(e => KeyDown(new KeyboardEventArgs { Code = "KeyW" }))" />
-            </td>
-            <td>
-                <input id="E" type="button" disabled="@game.waitMovement" value="E @Char.ConvertFromUtf32(8631)" class="buttonsmovement" @onclick="@(e => KeyDown(new KeyboardEventArgs { Code = "KeyE" }))" />
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <input id="A" type="button" disabled="@game.waitMovement" value="A @Char.ConvertFromUtf32(8592)" class="buttonsmovement" @onclick="@(e => KeyDown(new KeyboardEventArgs { Code = "KeyA" }))" />
-            </td>
-            <td>
-                <input id="S" type="button" disabled="@game.waitMovement" value="S @Char.ConvertFromUtf32(8595)" class="buttonsmovement" @onclick="@(e => KeyDown(new KeyboardEventArgs { Code = "KeyS" }))" />
-            </td>
-            <td>
-                <input id="D" type="button" disabled="@game.waitMovement" value="D @Char.ConvertFromUtf32(8594)" class="buttonsmovement" @onclick="@(e => KeyDown(new KeyboardEventArgs { Code = "KeyD" }))" />
-            </td>
-        </tr>
-    </table>
+        </pre>
+    </div>
 
-    <pre class="map" @onkeydown="KeyDown" style="width: @(game.viewport.vpWidth)px;">
-        @for (int y = game.map.mapCells.GetLength(1) - 1; y >= 0; y--)
-        {
-            for (int x = 0; x < game.map.mapCells.GetLength(0); x++)
+    <div id="maparea">
+        <pre class="map" @onkeydown="KeyDown">
+            @for (int y = game.map.mapCells.GetLength(1) - 1; y >= 0; y--)
             {
-            <span class="@game.map.mapCells[x,y].cssClass">@game.map.mapCells[x,y].character</span>        
+                for (int x = 0; x < game.map.mapCells.GetLength(0); x++)
+                {
+                <span class="@game.map.mapCells[x,y].cssClass">@game.map.mapCells[x,y].character</span>        
+                }
+                @Environment.NewLine
             }
-            @Environment.NewLine
-        }
-    </pre>
+        </pre>
+    </div>
 
 </div>
 

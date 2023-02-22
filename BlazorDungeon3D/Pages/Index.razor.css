@@ -3,6 +3,104 @@
     src: url('./fonts/fairfaxhd.ttf') format('truetype');
 }
 
+.mainscreen {
+    width: 448px;
+    height: 670px;
+    transform-origin: 0% 0% 0px;
+    background-color: black;
+}
+
+#commandsarea {
+    position: absolute;
+    left: 0px;
+    top: 275px;
+    width: 188px;
+    height: 92px;
+    background-color: #00DEDE;
+}
+
+#infoarea {
+    position: absolute;
+    left: 200px;
+    top: 275px;
+    width: 188px;
+    height: 92px;
+    color: aliceblue;
+}
+
+#maparea {
+    position: absolute;
+    left: 0px;
+    top: 369px;
+    width: 420px;
+    height: 92px;
+}
+
+.clickable {
+    -moz-user-select: none;
+    -khtml-user-select: none;
+}
+
+#turnLeft {
+    position: absolute;
+    left: 2px;
+    top: 2px;
+    width: 60px;
+    height: 43px;
+    background: url('./gfx/btnTurnLeft.png') no-repeat;
+    background-size: 120px 43px;
+}
+
+#moveUp {
+    position: absolute;
+    left: 64px;
+    top: 2px;
+    width: 60px;
+    height: 43px;
+    background: url('./gfx/btnUp.png') no-repeat;
+    background-size: 120px 43px;
+}
+
+#turnRight {
+    position: absolute;
+    left: 126px;
+    top: 2px;
+    width: 60px;
+    height: 43px;
+    background: url('./gfx/btnTurnRight.png') no-repeat;
+    background-size: 120px 43px;
+}
+
+#moveLeft {
+    position: absolute;
+    left: 2px;
+    top: 47px;
+    width: 60px;
+    height: 86px;
+    background: url('./gfx/btnLeft.png') no-repeat;
+    background-size: 120px 43px;
+}
+
+#moveDown {
+    position: absolute;
+    left: 64px;
+    top: 47px;
+    width: 60px;
+    height: 86px;
+    background: url('./gfx/btnDown.png') no-repeat;
+    background-size: 120px 43px;
+}
+
+#moveRight {
+    position: absolute;
+    left: 126px;
+    top: 47px;
+    width: 60px;
+    height: 86px;
+    background: url('./gfx/btnRight.png') no-repeat;
+    background-size: 120px 43px;
+}
+
 .map {
     display: inline-block;
     text-align: left;
