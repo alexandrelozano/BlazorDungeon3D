@@ -65,7 +65,7 @@
             {
                 case 0:
                     x = curX;
-                    for (y = curY; y >= curY - 2; y--)
+                    for (y = curY; y >= curY - 3; y--)
                         if (y >= 0 && y < mapCells.GetLength(1))
                             if (mapCells[x, y].type == '0')
                             {
@@ -82,7 +82,7 @@
                     break;
                 case 1:
                     y = curY;
-                    for (x = curX; x >= curX - 2; x--)
+                    for (x = curX; x >= curX - 3; x--)
                         if (x >= 0 && x < mapCells.GetLength(0))
                             if (mapCells[x, y].type == '0')
                             {
@@ -99,7 +99,7 @@
                     break;
                 case 2:
                     x = curX;
-                    for (y = curY; y <= curY + 2; y++)
+                    for (y = curY; y <= curY + 3; y++)
                         if (y >= 0 && y < mapCells.GetLength(1))
                             if (mapCells[x, y].type == '0')
                             {
@@ -116,7 +116,7 @@
                     break;
                 case 3:
                     y = curY;
-                    for (x = curX; x <= curX + 2; x++)
+                    for (x = curX; x <= curX + 3; x++)
                         if (x >= 0 && x < mapCells.GetLength(0))
                             if (mapCells[x, y].type == '0')
                             {
