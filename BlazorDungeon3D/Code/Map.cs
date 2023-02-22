@@ -56,12 +56,82 @@
                 }
         }
 
-        public void UpdateVisibleMap(int curX, int curY)
+        public void UpdateVisibleMap(int curX, int curY, int curDir)
         {
-            for (int x = curX - 3; x < curX + 3; x++)
-                for (int y = curY - 3; y < curY + 3; y++)
-                    if (x >= 0 && y >= 0 && x < mapCells.GetLength(0) && y < mapCells.GetLength(1))
-                        mapCells[x, y].visible = true;
+            int x;
+            int y;
+
+            switch (curDir)
+            {
+                case 0:
+                    x = curX;
+                    for (y = curY; y >= curY - 2; y--)
+                        if (y >= 0 && y < mapCells.GetLength(1))
+                            if (mapCells[x, y].type == '0')
+                            {
+                                mapCells[x, y].visible = true;
+
+                                if (x - 1 >= 0) mapCells[x - 1, y].visible = true;
+                                if (x + 1 < mapCells.GetLength(0)) mapCells[x + 1, y].visible = true;
+                            }
+                            else if (mapCells[x, y].type == '1')
+                            {
+                                mapCells[x, y].visible = true;
+                                break;
+                            }
+                    break;
+                case 1:
+                    y = curY;
+                    for (x = curX; x >= curX - 2; x--)
+                        if (x >= 0 && x < mapCells.GetLength(0))
+                            if (mapCells[x, y].type == '0')
+                            {
+                                mapCells[x, y].visible = true;
+
+                                if (y - 1 >= 0) mapCells[x, y - 1].visible = true;
+                                if (y + 1 < mapCells.GetLength(1)) mapCells[x, y + 1].visible = true;
+                            }
+                            else if (mapCells[x, y].type == '1')
+                            {
+                                mapCells[x, y].visible = true;
+                                break;
+                            }
+                    break;
+                case 2:
+                    x = curX;
+                    for (y = curY; y <= curY + 2; y++)
+                        if (y >= 0 && y < mapCells.GetLength(1))
+                            if (mapCells[x, y].type == '0')
+                            {
+                                mapCells[x, y].visible = true;
+
+                                if (x - 1 >= 0) mapCells[x - 1, y].visible = true;
+                                if (x + 1 < mapCells.GetLength(0)) mapCells[x + 1, y].visible = true;
+                            }
+                            else if (mapCells[x, y].type == '1')
+                            {
+                                mapCells[x, y].visible = true;
+                                break;
+                            }
+                    break;
+                case 3:
+                    y = curY;
+                    for (x = curX; x <= curX + 2; x++)
+                        if (x >= 0 && x < mapCells.GetLength(0))
+                            if (mapCells[x, y].type == '0')
+                            {
+                                mapCells[x, y].visible = true;
+
+                                if (y - 1 >= 0) mapCells[x, y - 1].visible = true;
+                                if (y + 1 < mapCells.GetLength(1)) mapCells[x, y + 1].visible = true;
+                            }
+                            else if (mapCells[x, y].type == '1')
+                            {
+                                mapCells[x, y].visible = true;
+                                break;
+                            }
+                    break;
+            }
         }
 
         public void UpdateCellMap(int curX, int curY, int curDir)

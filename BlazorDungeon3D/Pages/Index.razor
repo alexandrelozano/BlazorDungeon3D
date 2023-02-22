@@ -78,7 +78,7 @@ X:@game.player.curX Y:@game.player.curY Dir:@game.player.curDir
         game = new Game();
 
         game.viewport.UpdateViewport(game.player, game.map);
-        game.map.UpdateVisibleMap(game.player.curX, game.player.curY);
+        game.map.UpdateVisibleMap(game.player.curX, game.player.curY, game.player.curDir);
         game.map.UpdateCellMap(game.player.curX, game.player.curY, game.player.curDir);
     }
 

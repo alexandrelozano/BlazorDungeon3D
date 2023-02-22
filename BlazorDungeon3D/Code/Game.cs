@@ -41,13 +41,12 @@
                     TurnRight();
                     break;
             }
-
-            map.UpdateVisibleMap(player.curX, player.curY);
         }
 
         public void Render()
         {
             viewport.UpdateViewport(player, map);
+            map.UpdateVisibleMap(player.curX, player.curY, player.curDir);
             map.UpdateCellMap(player.curX, player.curY, player.curDir);
         }
 
