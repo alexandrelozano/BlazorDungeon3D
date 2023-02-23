@@ -8,6 +8,7 @@
         public Compass compass;
         public int speed;           // Milliseconds between moves
         public bool waitMovement;
+        public Dictionary<string, bool> waitMovements;
 
         public Game()
         {
@@ -16,6 +17,28 @@
             viewport = new ViewPort();
             compass = new Compass();
             speed = 200;
+            waitMovements = new Dictionary<string, bool>
+            {
+                { "KeyW", false },
+                { "KeyS", false },
+                { "KeyA", false },
+                { "KeyD", false },
+                { "KeyQ", false },
+                { "KeyE", false }
+            };
+        }
+
+        public void beginWaitMovement(string code)
+        {
+            waitMovement = true;
+            waitMovements[code] = true;
+        }
+
+        public void resetWaitMovements()
+        {
+            waitMovement = false;
+            foreach (var key in waitMovements.Keys)
+                waitMovements[key] = false;
         }
 
         public void Move(string code)

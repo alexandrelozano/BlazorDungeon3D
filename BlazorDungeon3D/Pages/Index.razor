@@ -27,12 +27,12 @@
     </div>
 
     <div id="commandsarea">
-        <div id="turnLeft" class="clickable" style="cursor: pointer; background-position: 0px 0px;" @onclick="@(e => KeyDown(new KeyboardEventArgs { Code = "KeyQ" }))"></div>
-        <div id="moveUp" class="clickable" style="cursor: pointer; background-position: 0px 0px;" @onclick="@(e => KeyDown(new KeyboardEventArgs { Code = "KeyW" }))"></div>
-        <div id="turnRight" class="clickable" style="cursor: pointer; background-position: 0px 0px;" @onclick="@(e => KeyDown(new KeyboardEventArgs { Code = "KeyE" }))"></div>
-        <div id="moveLeft" class="clickable" style="cursor: pointer; background-position: 0px 0px;" @onclick="@(e => KeyDown(new KeyboardEventArgs { Code = "KeyA" }))"></div>
-        <div id="moveDown" class="clickable" style="cursor: pointer; background-position: 0px 0px;" @onclick="@(e => KeyDown(new KeyboardEventArgs { Code = "KeyS" }))"> </div>
-        <div id="moveRight" class="clickable" style="cursor: pointer; background-position: 0px 0px;" @onclick="@(e => KeyDown(new KeyboardEventArgs { Code = "KeyD" }))"></div>
+        <div id="turnLeft" class="clickable" style="cursor: pointer; background-position: @DisableCommand("KeyQ")px 0px;" @onclick="@(e => KeyDown(new KeyboardEventArgs { Code = "KeyQ" }))"></div>
+        <div id="moveUp" class="clickable" style="cursor: pointer; background-position: @DisableCommand("KeyW")px 0px;" @onclick="@(e => KeyDown(new KeyboardEventArgs { Code = "KeyW" }))"></div>
+        <div id="turnRight" class="clickable" style="cursor: pointer; background-position: @DisableCommand("KeyE")px 0px;" @onclick="@(e => KeyDown(new KeyboardEventArgs { Code = "KeyE" }))"></div>
+        <div id="moveLeft" class="clickable" style="cursor: pointer; background-position: @DisableCommand("KeyA")px 0px;" @onclick="@(e => KeyDown(new KeyboardEventArgs { Code = "KeyA" }))"></div>
+        <div id="moveDown" class="clickable" style="cursor: pointer; background-position: @DisableCommand("KeyS")px 0px;" @onclick="@(e => KeyDown(new KeyboardEventArgs { Code = "KeyS" }))"> </div>
+        <div id="moveRight" class="clickable" style="cursor: pointer; background-position: @DisableCommand("KeyD")px 0px;" @onclick="@(e => KeyDown(new KeyboardEventArgs { Code = "KeyD" }))"></div>
     </div>
 
     <div id="infoarea">
@@ -95,12 +95,17 @@ X:@game.player.curX Y:@game.player.curY Dir:@game.player.curDir
     {
         if (!game.waitMovement)
         {
-            game.waitMovement = true;
+            game.beginWaitMovement(e.Code);
             game.Move(e.Code);
             await Task.Delay(game.speed);
-            game.waitMovement = false;
+            game.resetWaitMovements();
             StateHasChanged();
         }
+    }
+
+    protected string DisableCommand(string code)
+    {
+        return game.waitMovements[code] ? "-60" : "0";
     }
 
     protected async void WindowResized(object _, BrowserWindowSize window)
