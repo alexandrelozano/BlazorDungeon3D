@@ -168,6 +168,42 @@
     height: 58px;
 }
 
+.itemApple_1 {
+    position: absolute;
+    left: 105px;
+    top: 190px;
+    background-image: url('./gfx/itemApple_1.png');
+    width: 64px;
+    z-index: 400;
+    height: 272px;
+    display: none;
+    background-repeat: no-repeat;
+}
+
+.itemApple_2 {
+    position: absolute;
+    left: 148px;
+    top: 155px;
+    background-image: url('./gfx/itemApple_2.png');
+    width: 64px;
+    z-index: 300;
+    height: 272px;
+    display: none;
+    background-repeat: no-repeat;
+}
+
+.itemApple_3 {
+    position: absolute;
+    left: 180px;
+    top: 128px;
+    background-image: url('./gfx/itemApple_3.png');
+    width: 64px;
+    z-index: 200;
+    height: 272px;
+    display: none;
+    background-repeat: no-repeat;
+}
+
 .wallLside0 {
     position: absolute;
     left: 0px;

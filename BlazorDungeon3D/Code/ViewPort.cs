@@ -60,6 +60,10 @@
             dicDispBlocks.Add("wallSide3_1", "none");
             dicDispBlocks.Add("wallFront3", "none");
             dicDispBlocks.Add("wallSide3_2", "none");
+
+            dicDispBlocks.Add("itemApple_0", "none");
+            dicDispBlocks.Add("itemApple_1", "none");
+            dicDispBlocks.Add("itemApple_2", "none");
         }
 
         private void disblock(string xclass)
@@ -77,18 +81,18 @@
             if (x >= 0 && x < map.mapCells.GetLength(0) && y >= 0 && y < map.mapCells.GetLength(1))
             {
                 if (map.mapCells[x, y].type == '1')
-                {
                     disblock(xclass);
-                }
                 else
-                {
                     hideblock(xclass);
-                }
             }
         }
 
         public void UpdateViewport(Player player, Map map)
         {
+            //dicDispBlocks["itemApple_0"] = "block";
+            //dicDispBlocks["itemApple_1"] = "block";
+            //dicDispBlocks["itemApple_2"] = "block";
+
             switch (player.curDir)
             {
                 case 0:
@@ -110,6 +114,22 @@
                     checkcell(map, player.curX - 1, player.curY - 3, "wallSide3_2");
                     checkcell(map, player.curX + 1, player.curY - 3, "wallSide3_1");
                     checkcell(map, player.curX + 1, player.curY - 3, "wallSide3_1");
+
+                    if (player.curY - 3 > 0 && map.mapCells[player.curX, player.curY - 3].item1 == 'a')
+                        disblock("itemApple_3");
+                    else
+                        hideblock("itemApple_3");
+
+                    if (player.curY - 2 > 0 && map.mapCells[player.curX, player.curY - 2].item1 == 'a')
+                        disblock("itemApple_2");
+                    else
+                        hideblock("itemApple_2");
+
+                    if (player.curY - 1 > 0 && map.mapCells[player.curX, player.curY - 1].item1 == 'a')
+                        disblock("itemApple_1");
+                    else
+                        hideblock("itemApple_1");
+
                     break;
 
                 case 1:
@@ -131,6 +151,22 @@
                     checkcell(map, player.curX - 3, player.curY + 1, "wallSide3_2");
                     checkcell(map, player.curX - 3, player.curY - 1, "wallSide3_1");
                     checkcell(map, player.curX - 3, player.curY - 1, "wallSide3_1");
+
+                    if (player.curX - 3 > 0 && map.mapCells[player.curX - 3, player.curY].item1 == 'a')
+                        disblock("itemApple_3");
+                    else
+                        hideblock("itemApple_3");
+
+                    if (player.curX - 2 > 0 && map.mapCells[player.curX - 2, player.curY].item1 == 'a')
+                        disblock("itemApple_2");
+                    else
+                        hideblock("itemApple_2");
+
+                    if (player.curX - 1 > 0 && map.mapCells[player.curX - 1, player.curY].item1 == 'a')
+                        disblock("itemApple_1");
+                    else
+                        hideblock("itemApple_1");
+
                     break;
 
                 case 2:
@@ -151,6 +187,22 @@
                     checkcell(map, player.curX, player.curY + 3, "wallFront3");
                     checkcell(map, player.curX + 1, player.curY + 3, "wallSide3_2");
                     checkcell(map, player.curX - 1, player.curY + 3, "wallSide3_1");
+
+                    if (player.curY + 3 < map.mapCells.GetLength(1) && map.mapCells[player.curX, player.curY + 3].item1 == 'a')
+                        disblock("itemApple_3");
+                    else
+                        hideblock("itemApple_3");
+
+                    if (player.curY + 2 < map.mapCells.GetLength(1) && map.mapCells[player.curX, player.curY + 2].item1 == 'a')
+                        disblock("itemApple_2");
+                    else
+                        hideblock("itemApple_2");
+
+                    if (player.curY + 1 < map.mapCells.GetLength(1) && map.mapCells[player.curX, player.curY + 1].item1 == 'a')
+                        disblock("itemApple_1");
+                    else
+                        hideblock("itemApple_1");
+
                     break;
 
                 case 3:
@@ -172,6 +224,21 @@
                     checkcell(map, player.curX + 3, player.curY, "wallFront3");
                     checkcell(map, player.curX + 3, player.curY - 1, "wallSide3_2");
                     checkcell(map, player.curX + 3, player.curY + 1, "wallSide3_1");
+
+                    if (player.curX + 3 < map.mapCells.GetLength(0) && map.mapCells[player.curX + 3, player.curY].item1 == 'a')
+                        disblock("itemApple_3");
+                    else
+                        hideblock("itemApple_3");
+
+                    if (player.curX + 2 < map.mapCells.GetLength(0) && map.mapCells[player.curX + 2, player.curY].item1 == 'a')
+                        disblock("itemApple_2");
+                    else
+                        hideblock("itemApple_2");
+
+                    if (player.curX + 1 < map.mapCells.GetLength(0) && map.mapCells[player.curX + 1, player.curY].item1 == 'a')
+                        disblock("itemApple_1");
+                    else
+                        hideblock("itemApple_1");
                     break;
             }
         }

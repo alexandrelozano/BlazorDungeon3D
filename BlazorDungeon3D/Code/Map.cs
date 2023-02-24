@@ -54,6 +54,8 @@
                     mapCells[x, y].type = txtCells[txtCells.GetLength(0) - y - 1][x];
                     mapCells[x, y].visible = false;
                 }
+
+            mapCells[1, 19].item1 = 'a';
         }
 
         public void UpdateVisibleMap(int curX, int curY, int curDir)
