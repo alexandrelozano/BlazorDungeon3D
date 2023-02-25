@@ -24,15 +24,15 @@
             <div class="@kvp.Key" style="display: @kvp.Value"></div>
         }
 
-    </div>
+        <div id="commandsarea">
+            <div id="turnLeft" class="clickable" style="cursor: pointer; background-position: @DisableCommand("KeyQ")px 0px;" @onclick="@(e => KeyDown(new KeyboardEventArgs { Code = "KeyQ" }))"></div>
+            <div id="moveUp" class="clickable" style="cursor: pointer; background-position: @DisableCommand("KeyW")px 0px;" @onclick="@(e => KeyDown(new KeyboardEventArgs { Code = "KeyW" }))"></div>
+            <div id="turnRight" class="clickable" style="cursor: pointer; background-position: @DisableCommand("KeyE")px 0px;" @onclick="@(e => KeyDown(new KeyboardEventArgs { Code = "KeyE" }))"></div>
+            <div id="moveLeft" class="clickable" style="cursor: pointer; background-position: @DisableCommand("KeyA")px 0px;" @onclick="@(e => KeyDown(new KeyboardEventArgs { Code = "KeyA" }))"></div>
+            <div id="moveDown" class="clickable" style="cursor: pointer; background-position: @DisableCommand("KeyS")px 0px;" @onclick="@(e => KeyDown(new KeyboardEventArgs { Code = "KeyS" }))"> </div>
+            <div id="moveRight" class="clickable" style="cursor: pointer; background-position: @DisableCommand("KeyD")px 0px;" @onclick="@(e => KeyDown(new KeyboardEventArgs { Code = "KeyD" }))"></div>
+        </div>
 
-    <div id="commandsarea">
-        <div id="turnLeft" class="clickable" style="cursor: pointer; background-position: @DisableCommand("KeyQ")px 0px;" @onclick="@(e => KeyDown(new KeyboardEventArgs { Code = "KeyQ" }))"></div>
-        <div id="moveUp" class="clickable" style="cursor: pointer; background-position: @DisableCommand("KeyW")px 0px;" @onclick="@(e => KeyDown(new KeyboardEventArgs { Code = "KeyW" }))"></div>
-        <div id="turnRight" class="clickable" style="cursor: pointer; background-position: @DisableCommand("KeyE")px 0px;" @onclick="@(e => KeyDown(new KeyboardEventArgs { Code = "KeyE" }))"></div>
-        <div id="moveLeft" class="clickable" style="cursor: pointer; background-position: @DisableCommand("KeyA")px 0px;" @onclick="@(e => KeyDown(new KeyboardEventArgs { Code = "KeyA" }))"></div>
-        <div id="moveDown" class="clickable" style="cursor: pointer; background-position: @DisableCommand("KeyS")px 0px;" @onclick="@(e => KeyDown(new KeyboardEventArgs { Code = "KeyS" }))"> </div>
-        <div id="moveRight" class="clickable" style="cursor: pointer; background-position: @DisableCommand("KeyD")px 0px;" @onclick="@(e => KeyDown(new KeyboardEventArgs { Code = "KeyD" }))"></div>
     </div>
 
     <div id="infoarea">
