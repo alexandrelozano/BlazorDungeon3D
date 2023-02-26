@@ -8,7 +8,17 @@
         public Compass compass;
         public int speed;           // Milliseconds between moves
         public bool waitMovement;
-        public Dictionary<string, bool> waitMovements;
+        public Dictionary<Commands, bool> waitMovements;
+
+        public enum Commands
+        {
+            GoForward,
+            GoBackward, 
+            GoLeft, 
+            GoRight, 
+            TurnLeft, 
+            TurnRight
+        }
 
         public Game()
         {
@@ -17,21 +27,21 @@
             viewport = new ViewPort();
             compass = new Compass();
             speed = 200;
-            waitMovements = new Dictionary<string, bool>
+            waitMovements = new Dictionary<Commands, bool>
             {
-                { "KeyW", false },
-                { "KeyS", false },
-                { "KeyA", false },
-                { "KeyD", false },
-                { "KeyQ", false },
-                { "KeyE", false }
+                { Commands.GoForward, false },
+                { Commands.GoBackward, false },
+                { Commands.GoLeft, false },
+                { Commands.GoRight, false },
+                { Commands.TurnLeft, false },
+                { Commands.TurnRight, false }
             };
         }
 
-        public void beginWaitMovement(string code)
+        public void beginWaitMovement(Commands command)
         {
             waitMovement = true;
-            waitMovements[code] = true;
+            waitMovements[command] = true;
         }
 
         public void resetWaitMovements()
@@ -41,26 +51,26 @@
                 waitMovements[key] = false;
         }
 
-        public void Move(string code)
+        public void DoCommand(Commands command)
         {
-            switch (code)
+            switch (command)
             {
-                case "KeyW":
+                case Commands.GoForward:
                     GoForward();
                     break;
-                case "KeyS":
-                    GoBack();
+                case Commands.GoBackward:
+                    GoBackward();
                     break;
-                case "KeyA":
+                case Commands.GoLeft:
                     GoLeft();
                     break;
-                case "KeyD":
+                case Commands.GoRight:
                     GoRight();
                     break;
-                case "KeyQ":
+                case Commands.TurnLeft:
                     TurnLeft();
                     break;
-                case "KeyE":
+                case Commands.TurnRight:
                     TurnRight();
                     break;
             }
@@ -94,7 +104,7 @@
             Render();
         }
 
-        public void GoBack()
+        public void GoBackward()
         {
             switch (player.curDir)
             {

@@ -115,20 +115,23 @@
                     checkcell(map, player.curX + 1, player.curY - 3, "wallSide3_1");
                     checkcell(map, player.curX + 1, player.curY - 3, "wallSide3_1");
 
-                    if (player.curY - 3 > 0 && map.mapCells[player.curX, player.curY - 3].item1 == 'a')
-                        disblock("itemApple_3");
+                    if (player.curY - 3 > 0 && map.mapCells[player.curX, player.curY - 3].item1 > 0)
+                        disblock($"item{map.itemCodes[map.mapCells[player.curX, player.curY - 3].item1]}_3");
                     else
-                        hideblock("itemApple_3");
+                        foreach (char itemCode in map.itemCodes.Keys)
+                            hideblock($"item{map.itemCodes[itemCode]}_3");
 
-                    if (player.curY - 2 > 0 && map.mapCells[player.curX, player.curY - 2].item1 == 'a')
-                        disblock("itemApple_2");
+                    if (player.curY - 2 > 0 && map.mapCells[player.curX, player.curY - 2].item1 > 0)
+                        disblock($"item{map.itemCodes[map.mapCells[player.curX, player.curY - 2].item1]}_2");
                     else
-                        hideblock("itemApple_2");
+                        foreach (char itemCode in map.itemCodes.Keys)
+                            hideblock($"item{map.itemCodes[itemCode]}_2");
 
-                    if (player.curY - 1 > 0 && map.mapCells[player.curX, player.curY - 1].item1 == 'a')
-                        disblock("itemApple_1");
+                    if (player.curY - 1 > 0 && map.mapCells[player.curX, player.curY - 1].item1 > 0)
+                        disblock($"item{map.itemCodes[map.mapCells[player.curX, player.curY - 1].item1]}_1");
                     else
-                        hideblock("itemApple_1");
+                        foreach (char itemCode in map.itemCodes.Keys)
+                            hideblock($"item{map.itemCodes[itemCode]}_1");
 
                     break;
 

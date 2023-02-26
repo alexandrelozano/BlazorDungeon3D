@@ -10,7 +10,7 @@
 
 <PageTitle>BlazorDungeon3D</PageTitle>
 
-<div class="mainscreen" @onkeydown="KeyDown" style="transform: scale(@CalculateTransformScale());">
+<div class="mainscreen" style="transform: scale(@CalculateTransformScale());">
 
     <div tabindex="0" id="viewport" style="width: @(game.viewport.vpWidth)px; height: @(game.viewport.vpHeight)px;">
 
@@ -25,12 +25,12 @@
         }
 
         <div id="commandsarea">
-            <div id="turnLeft" class="clickable" style="cursor: pointer; background-position: @DisableCommand("KeyQ")px 0px;" @onclick="@(e => KeyDown(new KeyboardEventArgs { Code = "KeyQ" }))"></div>
-            <div id="moveUp" class="clickable" style="cursor: pointer; background-position: @DisableCommand("KeyW")px 0px;" @onclick="@(e => KeyDown(new KeyboardEventArgs { Code = "KeyW" }))"></div>
-            <div id="turnRight" class="clickable" style="cursor: pointer; background-position: @DisableCommand("KeyE")px 0px;" @onclick="@(e => KeyDown(new KeyboardEventArgs { Code = "KeyE" }))"></div>
-            <div id="moveLeft" class="clickable" style="cursor: pointer; background-position: @DisableCommand("KeyA")px 0px;" @onclick="@(e => KeyDown(new KeyboardEventArgs { Code = "KeyA" }))"></div>
-            <div id="moveDown" class="clickable" style="cursor: pointer; background-position: @DisableCommand("KeyS")px 0px;" @onclick="@(e => KeyDown(new KeyboardEventArgs { Code = "KeyS" }))"> </div>
-            <div id="moveRight" class="clickable" style="cursor: pointer; background-position: @DisableCommand("KeyD")px 0px;" @onclick="@(e => KeyDown(new KeyboardEventArgs { Code = "KeyD" }))"></div>
+            <div id="turnLeft" class="clickable" style="cursor: pointer; background-position: @DisableCommand(Game.Commands.TurnLeft)px 0px;" @onclick="@(e => DoCommand(Game.Commands.TurnLeft))"></div>
+            <div id="moveUp" class="clickable" style="cursor: pointer; background-position: @DisableCommand(Game.Commands.GoForward)px 0px;" @onclick="@(e => DoCommand(Game.Commands.GoForward))"></div>
+            <div id="turnRight" class="clickable" style="cursor: pointer; background-position: @DisableCommand(Game.Commands.TurnRight)px 0px;" @onclick="@(e => DoCommand(Game.Commands.TurnRight))"></div>
+            <div id="moveLeft" class="clickable" style="cursor: pointer; background-position: @DisableCommand(Game.Commands.GoLeft)px 0px;" @onclick="@(e => DoCommand(Game.Commands.GoLeft))"></div>
+            <div id="moveDown" class="clickable" style="cursor: pointer; background-position: @DisableCommand(Game.Commands.GoBackward)px 0px;" @onclick="@(e => DoCommand(Game.Commands.GoBackward))"> </div>
+            <div id="moveRight" class="clickable" style="cursor: pointer; background-position: @DisableCommand(Game.Commands.GoRight)px 0px;" @onclick="@(e => DoCommand(Game.Commands.GoRight))"></div>
         </div>
 
         <div id="infoarea">
@@ -42,7 +42,7 @@ X:@game.player.curX Y:@game.player.curY Dir:@game.player.curDir
         </div>
 
         <div id="maparea">
-            <pre class="map" @onkeydown="KeyDown">
+            <pre class="map">
                 @for (int y = game.map.mapCells.GetLength(1) - 1; y >= 0; y--)
                 {
                     for (int x = 0; x < game.map.mapCells.GetLength(0); x++)
@@ -91,21 +91,21 @@ X:@game.player.curX Y:@game.player.curY Dir:@game.player.curDir
         }
     }
 
-    protected async void KeyDown(KeyboardEventArgs e)
+    protected async void DoCommand(Game.Commands command)
     {
         if (!game.waitMovement)
         {
-            game.beginWaitMovement(e.Code);
-            game.Move(e.Code);
+            game.beginWaitMovement(command);
+            game.DoCommand(command);
             await Task.Delay(game.speed);
             game.resetWaitMovements();
             StateHasChanged();
         }
     }
 
-    protected string DisableCommand(string code)
+    protected string DisableCommand(Game.Commands command)
     {
-        return game.waitMovements[code] ? "-60" : "0";
+        return game.waitMovements[command] ? "-60" : "0";
     }
 
     protected async void WindowResized(object _, BrowserWindowSize window)

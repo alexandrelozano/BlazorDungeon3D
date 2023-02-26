@@ -1,8 +1,12 @@
-﻿namespace BlazorDungeon3D.Code
+﻿using static BlazorDungeon3D.Code.Game;
+
+namespace BlazorDungeon3D.Code
 {
     public class Map
     {
         public Cell[,] mapCells;
+
+        public Dictionary<char, string> itemCodes;
 
         string chPlayerN = "";
         string chPlayerS = "";
@@ -55,7 +59,12 @@
                     mapCells[x, y].visible = false;
                 }
 
-            mapCells[1, 19].item1 = 'a';
+            itemCodes = new Dictionary<char, string>
+            {
+                { 'a', "Apple"}
+            };
+
+            mapCells[1, 19].item1 = itemCodes.FirstOrDefault(x => x.Value == "Apple").Key;
         }
 
         public void UpdateVisibleMap(int curX, int curY, int curDir)
