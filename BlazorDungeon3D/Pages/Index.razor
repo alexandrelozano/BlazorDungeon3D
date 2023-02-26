@@ -33,27 +33,27 @@
             <div id="moveRight" class="clickable" style="cursor: pointer; background-position: @DisableCommand("KeyD")px 0px;" @onclick="@(e => KeyDown(new KeyboardEventArgs { Code = "KeyD" }))"></div>
         </div>
 
-    </div>
-
-    <div id="infoarea">
-        <pre>   N
+        <div id="infoarea">
+            <pre>   N
 W  @game.compass.Draw(game.player.curDir)  E
    S    
 X:@game.player.curX Y:@game.player.curY Dir:@game.player.curDir
-        </pre>
-    </div>
+            </pre>
+        </div>
 
-    <div id="maparea">
-        <pre class="map" @onkeydown="KeyDown">
-            @for (int y = game.map.mapCells.GetLength(1) - 1; y >= 0; y--)
-            {
-                for (int x = 0; x < game.map.mapCells.GetLength(0); x++)
+        <div id="maparea">
+            <pre class="map" @onkeydown="KeyDown">
+                @for (int y = game.map.mapCells.GetLength(1) - 1; y >= 0; y--)
                 {
-                <span class="@game.map.mapCells[x,y].cssClass">@game.map.mapCells[x,y].character</span>        
+                    for (int x = 0; x < game.map.mapCells.GetLength(0); x++)
+                    {
+                    <span class="@game.map.mapCells[x,y].cssClass">@game.map.mapCells[x,y].character</span>        
+                    }
+                    @Environment.NewLine
                 }
-                @Environment.NewLine
-            }
-        </pre>
+            </pre>
+        </div>
+
     </div>
 
 </div>
