@@ -168,7 +168,7 @@
     height: 58px;
 }
 
-.itemApple_1 {
+.itemAppleL_1 {
     position: absolute;
     left: 105px;
     top: 190px;
@@ -180,7 +180,7 @@
     background-repeat: no-repeat;
 }
 
-.itemApple_2 {
+.itemAppleL_2 {
     position: absolute;
     left: 148px;
     top: 155px;
@@ -192,9 +192,45 @@
     background-repeat: no-repeat;
 }
 
-.itemApple_3 {
+.itemAppleL_3 {
     position: absolute;
     left: 180px;
+    top: 128px;
+    background-image: url('./gfx/itemApple_3.png');
+    width: 37px;
+    z-index: 200;
+    height: 24px;
+    display: none;
+    background-repeat: no-repeat;
+}
+
+.itemAppleR_1 {
+    position: absolute;
+    left: 280px;
+    top: 190px;
+    background-image: url('./gfx/itemApple_1.png');
+    width: 73px;
+    z-index: 400;
+    height: 51px;
+    display: none;
+    background-repeat: no-repeat;
+}
+
+.itemAppleR_2 {
+    position: absolute;
+    left: 268px;
+    top: 155px;
+    background-image: url('./gfx/itemApple_2.png');
+    width: 49px;
+    z-index: 300;
+    height: 33px;
+    display: none;
+    background-repeat: no-repeat;
+}
+
+.itemAppleR_3 {
+    position: absolute;
+    left: 245px;
     top: 128px;
     background-image: url('./gfx/itemApple_3.png');
     width: 37px;

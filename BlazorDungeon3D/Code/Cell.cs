@@ -27,5 +27,10 @@
         {
             return Enum.GetName(typeof(ItemType), item1);
         }
+
+        public string GetItem2TypeName()
+        {
+            return Enum.GetName(typeof(ItemType), item2);
+        }
     }
 }

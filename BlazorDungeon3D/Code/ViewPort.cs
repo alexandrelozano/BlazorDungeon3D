@@ -1,4 +1,6 @@
-﻿namespace BlazorDungeon3D.Code
+﻿using System.Numerics;
+
+namespace BlazorDungeon3D.Code
 {
     public class ViewPort
     {
@@ -61,9 +63,11 @@
             dicDispBlocks.Add("wallFront3", "none");
             dicDispBlocks.Add("wallSide3_2", "none");
 
-            dicDispBlocks.Add("itemApple_0", "none");
-            dicDispBlocks.Add("itemApple_1", "none");
-            dicDispBlocks.Add("itemApple_2", "none");
+            for (int i = 1; i <= 3; i++)
+                foreach (string zone in new []{ "L", "R"})
+                    foreach (string itemType in Enum.GetNames(typeof(ItemType)))
+                        dicDispBlocks.Add($"item{itemType}{zone}_{i}", "none");
+
         }
 
         private void disblock(string xclass)
@@ -87,12 +91,26 @@
             }
         }
 
+        private void checkItems(Map map, int x, int y, int dir, int order)
+        {
+            string zone1 = (dir == 0 || dir == 1) ? "L" : "R";
+            string zone2 = (dir == 0 || dir == 1) ? "R" : "L";
+
+            if (x > 0 && y > 0 && x < map.mapCells.GetLength(0) && y < map.mapCells.GetLength(1) && map.mapCells[x, y].item1 > 0)
+                disblock($"item{map.mapCells[x, y].GetItem1TypeName()}{zone1}_{order}");
+            else
+                foreach (string itemType in Enum.GetNames(typeof(ItemType)))
+                    hideblock($"item{itemType}{zone1}_{order}");
+
+            if (x > 0 && y > 0 && x < map.mapCells.GetLength(0) && y < map.mapCells.GetLength(1) && map.mapCells[x, y].item2 > 0)
+                disblock($"item{map.mapCells[x, y].GetItem2TypeName()}{zone2}_{order}");
+            else
+                foreach (string itemType in Enum.GetNames(typeof(ItemType)))
+                    hideblock($"item{itemType}{zone2}_{order}");
+        }
+
         public void UpdateViewport(Player player, Map map)
         {
-            //dicDispBlocks["itemApple_0"] = "block";
-            //dicDispBlocks["itemApple_1"] = "block";
-            //dicDispBlocks["itemApple_2"] = "block";
-
             switch (player.curDir)
             {
                 case 0:
@@ -115,23 +133,9 @@
                     checkcell(map, player.curX + 1, player.curY - 3, "wallSide3_1");
                     checkcell(map, player.curX + 1, player.curY - 3, "wallSide3_1");
 
-                    if (player.curY - 3 > 0 && map.mapCells[player.curX, player.curY - 3].item1 > 0)
-                        disblock($"item{map.mapCells[player.curX, player.curY - 3].GetItem1TypeName()}_3");
-                    else
-                        foreach (string itemType in Enum.GetNames(typeof(ItemType)))
-                            hideblock($"item{itemType}_3");
-
-                    if (player.curY - 2 > 0 && map.mapCells[player.curX, player.curY - 2].item1 > 0)
-                        disblock($"item{map.mapCells[player.curX, player.curY - 2].GetItem1TypeName()}_2");
-                    else
-                        foreach (string itemType in Enum.GetNames(typeof(ItemType)))
-                            hideblock($"item{itemType}_2");
-
-                    if (player.curY - 1 > 0 && map.mapCells[player.curX, player.curY - 1].item1 > 0)
-                        disblock($"item{map.mapCells[player.curX, player.curY - 1].GetItem1TypeName()}_1");
-                    else
-                        foreach (string itemType in Enum.GetNames(typeof(ItemType)))
-                            hideblock($"item{itemType}_1");
+                    checkItems(map, player.curX, player.curY - 3, player.curDir, 3);
+                    checkItems(map, player.curX, player.curY - 2, player.curDir, 2);
+                    checkItems(map, player.curX, player.curY - 1, player.curDir, 1);
 
                     break;
 
@@ -155,23 +159,9 @@
                     checkcell(map, player.curX - 3, player.curY - 1, "wallSide3_1");
                     checkcell(map, player.curX - 3, player.curY - 1, "wallSide3_1");
 
-                    if (player.curY - 3 > 0 && map.mapCells[player.curX - 3, player.curY].item1 > 0)
-                        disblock($"item{map.mapCells[player.curX - 3, player.curY].GetItem1TypeName()}_3");
-                    else
-                        foreach (string itemType in Enum.GetNames(typeof(ItemType)))
-                            hideblock($"item{itemType}_3");
-
-                    if (player.curY - 2 > 0 && map.mapCells[player.curX - 2, player.curY].item1 > 0)
-                        disblock($"item{map.mapCells[player.curX - 2, player.curY].GetItem1TypeName()}_2");
-                    else
-                        foreach (string itemType in Enum.GetNames(typeof(ItemType)))
-                            hideblock($"item{itemType}_2");
-
-                    if (player.curY - 1 > 0 && map.mapCells[player.curX - 1, player.curY].item1 > 0)
-                        disblock($"item{map.mapCells[player.curX - 1, player.curY].GetItem1TypeName()}_1");
-                    else
-                        foreach (string itemType in Enum.GetNames(typeof(ItemType)))
-                            hideblock($"item{itemType}_1");
+                    checkItems(map, player.curX - 3, player.curY, player.curDir, 3);
+                    checkItems(map, player.curX - 2, player.curY, player.curDir, 2);
+                    checkItems(map, player.curX - 1, player.curY, player.curDir, 1);
 
                     break;
 
@@ -194,23 +184,9 @@
                     checkcell(map, player.curX + 1, player.curY + 3, "wallSide3_2");
                     checkcell(map, player.curX - 1, player.curY + 3, "wallSide3_1");
 
-                    if (player.curY - 3 > 0 && map.mapCells[player.curX, player.curY + 3].item1 > 0)
-                        disblock($"item{map.mapCells[player.curX, player.curY + 3].GetItem1TypeName()}_3");
-                    else
-                        foreach (string itemType in Enum.GetNames(typeof(ItemType)))
-                            hideblock($"item{itemType}_3");
-
-                    if (player.curY - 2 > 0 && map.mapCells[player.curX, player.curY + 2].item1 > 0)
-                        disblock($"item{map.mapCells[player.curX, player.curY + 2].GetItem1TypeName()}_2");
-                    else
-                        foreach (string itemType in Enum.GetNames(typeof(ItemType)))
-                            hideblock($"item{itemType}_2");
-
-                    if (player.curY - 1 > 0 && map.mapCells[player.curX, player.curY + 1].item1 > 0)
-                        disblock($"item{map.mapCells[player.curX, player.curY + 1].GetItem1TypeName()}_1");
-                    else
-                        foreach (string itemType in Enum.GetNames(typeof(ItemType)))
-                            hideblock($"item{itemType}_1");
+                    checkItems(map, player.curX, player.curY + 3, player.curDir, 3);
+                    checkItems(map, player.curX, player.curY + 2, player.curDir, 2);
+                    checkItems(map, player.curX, player.curY + 1, player.curDir, 1);
 
                     break;
 
@@ -234,23 +210,9 @@
                     checkcell(map, player.curX + 3, player.curY - 1, "wallSide3_2");
                     checkcell(map, player.curX + 3, player.curY + 1, "wallSide3_1");
 
-                    if (player.curY - 3 > 0 && map.mapCells[player.curX + 3, player.curY].item1 > 0)
-                        disblock($"item{map.mapCells[player.curX + 3, player.curY].GetItem1TypeName()}_3");
-                    else
-                        foreach (string itemType in Enum.GetNames(typeof(ItemType)))
-                            hideblock($"item{itemType}_3");
-
-                    if (player.curY - 2 > 0 && map.mapCells[player.curX + 2, player.curY].item1 > 0)
-                        disblock($"item{map.mapCells[player.curX + 2, player.curY].GetItem1TypeName()}_2");
-                    else
-                        foreach (string itemType in Enum.GetNames(typeof(ItemType)))
-                            hideblock($"item{itemType}_2");
-
-                    if (player.curY - 1 > 0 && map.mapCells[player.curX + 1, player.curY].item1 > 0)
-                        disblock($"item{map.mapCells[player.curX + 1, player.curY].GetItem1TypeName()}_1");
-                    else
-                        foreach (string itemType in Enum.GetNames(typeof(ItemType)))
-                            hideblock($"item{itemType}_1");
+                    checkItems(map, player.curX + 3, player.curY, player.curDir, 3);
+                    checkItems(map, player.curX + 2, player.curY, player.curDir, 2);
+                    checkItems(map, player.curX + 1, player.curY, player.curDir, 1);
 
                     break;
             }
