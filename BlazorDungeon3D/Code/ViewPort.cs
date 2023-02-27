@@ -116,22 +116,22 @@
                     checkcell(map, player.curX + 1, player.curY - 3, "wallSide3_1");
 
                     if (player.curY - 3 > 0 && map.mapCells[player.curX, player.curY - 3].item1 > 0)
-                        disblock($"item{map.itemCodes[map.mapCells[player.curX, player.curY - 3].item1]}_3");
+                        disblock($"item{map.mapCells[player.curX, player.curY - 3].GetItem1TypeName()}_3");
                     else
-                        foreach (char itemCode in map.itemCodes.Keys)
-                            hideblock($"item{map.itemCodes[itemCode]}_3");
+                        foreach (string itemType in Enum.GetNames(typeof(ItemType)))
+                            hideblock($"item{itemType}_3");
 
                     if (player.curY - 2 > 0 && map.mapCells[player.curX, player.curY - 2].item1 > 0)
-                        disblock($"item{map.itemCodes[map.mapCells[player.curX, player.curY - 2].item1]}_2");
+                        disblock($"item{map.mapCells[player.curX, player.curY - 2].GetItem1TypeName()}_2");
                     else
-                        foreach (char itemCode in map.itemCodes.Keys)
-                            hideblock($"item{map.itemCodes[itemCode]}_2");
+                        foreach (string itemType in Enum.GetNames(typeof(ItemType)))
+                            hideblock($"item{itemType}_2");
 
                     if (player.curY - 1 > 0 && map.mapCells[player.curX, player.curY - 1].item1 > 0)
-                        disblock($"item{map.itemCodes[map.mapCells[player.curX, player.curY - 1].item1]}_1");
+                        disblock($"item{map.mapCells[player.curX, player.curY - 1].GetItem1TypeName()}_1");
                     else
-                        foreach (char itemCode in map.itemCodes.Keys)
-                            hideblock($"item{map.itemCodes[itemCode]}_1");
+                        foreach (string itemType in Enum.GetNames(typeof(ItemType)))
+                            hideblock($"item{itemType}_1");
 
                     break;
 
@@ -155,20 +155,23 @@
                     checkcell(map, player.curX - 3, player.curY - 1, "wallSide3_1");
                     checkcell(map, player.curX - 3, player.curY - 1, "wallSide3_1");
 
-                    if (player.curX - 3 > 0 && map.mapCells[player.curX - 3, player.curY].item1 == 'a')
-                        disblock("itemApple_3");
+                    if (player.curY - 3 > 0 && map.mapCells[player.curX - 3, player.curY].item1 > 0)
+                        disblock($"item{map.mapCells[player.curX - 3, player.curY].GetItem1TypeName()}_3");
                     else
-                        hideblock("itemApple_3");
+                        foreach (string itemType in Enum.GetNames(typeof(ItemType)))
+                            hideblock($"item{itemType}_3");
 
-                    if (player.curX - 2 > 0 && map.mapCells[player.curX - 2, player.curY].item1 == 'a')
-                        disblock("itemApple_2");
+                    if (player.curY - 2 > 0 && map.mapCells[player.curX - 2, player.curY].item1 > 0)
+                        disblock($"item{map.mapCells[player.curX - 2, player.curY].GetItem1TypeName()}_2");
                     else
-                        hideblock("itemApple_2");
+                        foreach (string itemType in Enum.GetNames(typeof(ItemType)))
+                            hideblock($"item{itemType}_2");
 
-                    if (player.curX - 1 > 0 && map.mapCells[player.curX - 1, player.curY].item1 == 'a')
-                        disblock("itemApple_1");
+                    if (player.curY - 1 > 0 && map.mapCells[player.curX - 1, player.curY].item1 > 0)
+                        disblock($"item{map.mapCells[player.curX - 1, player.curY].GetItem1TypeName()}_1");
                     else
-                        hideblock("itemApple_1");
+                        foreach (string itemType in Enum.GetNames(typeof(ItemType)))
+                            hideblock($"item{itemType}_1");
 
                     break;
 
@@ -191,20 +194,23 @@
                     checkcell(map, player.curX + 1, player.curY + 3, "wallSide3_2");
                     checkcell(map, player.curX - 1, player.curY + 3, "wallSide3_1");
 
-                    if (player.curY + 3 < map.mapCells.GetLength(1) && map.mapCells[player.curX, player.curY + 3].item1 == 'a')
-                        disblock("itemApple_3");
+                    if (player.curY - 3 > 0 && map.mapCells[player.curX, player.curY + 3].item1 > 0)
+                        disblock($"item{map.mapCells[player.curX, player.curY + 3].GetItem1TypeName()}_3");
                     else
-                        hideblock("itemApple_3");
+                        foreach (string itemType in Enum.GetNames(typeof(ItemType)))
+                            hideblock($"item{itemType}_3");
 
-                    if (player.curY + 2 < map.mapCells.GetLength(1) && map.mapCells[player.curX, player.curY + 2].item1 == 'a')
-                        disblock("itemApple_2");
+                    if (player.curY - 2 > 0 && map.mapCells[player.curX, player.curY + 2].item1 > 0)
+                        disblock($"item{map.mapCells[player.curX, player.curY + 2].GetItem1TypeName()}_2");
                     else
-                        hideblock("itemApple_2");
+                        foreach (string itemType in Enum.GetNames(typeof(ItemType)))
+                            hideblock($"item{itemType}_2");
 
-                    if (player.curY + 1 < map.mapCells.GetLength(1) && map.mapCells[player.curX, player.curY + 1].item1 == 'a')
-                        disblock("itemApple_1");
+                    if (player.curY - 1 > 0 && map.mapCells[player.curX, player.curY + 1].item1 > 0)
+                        disblock($"item{map.mapCells[player.curX, player.curY + 1].GetItem1TypeName()}_1");
                     else
-                        hideblock("itemApple_1");
+                        foreach (string itemType in Enum.GetNames(typeof(ItemType)))
+                            hideblock($"item{itemType}_1");
 
                     break;
 
@@ -228,20 +234,24 @@
                     checkcell(map, player.curX + 3, player.curY - 1, "wallSide3_2");
                     checkcell(map, player.curX + 3, player.curY + 1, "wallSide3_1");
 
-                    if (player.curX + 3 < map.mapCells.GetLength(0) && map.mapCells[player.curX + 3, player.curY].item1 == 'a')
-                        disblock("itemApple_3");
+                    if (player.curY - 3 > 0 && map.mapCells[player.curX + 3, player.curY].item1 > 0)
+                        disblock($"item{map.mapCells[player.curX + 3, player.curY].GetItem1TypeName()}_3");
                     else
-                        hideblock("itemApple_3");
+                        foreach (string itemType in Enum.GetNames(typeof(ItemType)))
+                            hideblock($"item{itemType}_3");
 
-                    if (player.curX + 2 < map.mapCells.GetLength(0) && map.mapCells[player.curX + 2, player.curY].item1 == 'a')
-                        disblock("itemApple_2");
+                    if (player.curY - 2 > 0 && map.mapCells[player.curX + 2, player.curY].item1 > 0)
+                        disblock($"item{map.mapCells[player.curX + 2, player.curY].GetItem1TypeName()}_2");
                     else
-                        hideblock("itemApple_2");
+                        foreach (string itemType in Enum.GetNames(typeof(ItemType)))
+                            hideblock($"item{itemType}_2");
 
-                    if (player.curX + 1 < map.mapCells.GetLength(0) && map.mapCells[player.curX + 1, player.curY].item1 == 'a')
-                        disblock("itemApple_1");
+                    if (player.curY - 1 > 0 && map.mapCells[player.curX + 1, player.curY].item1 > 0)
+                        disblock($"item{map.mapCells[player.curX + 1, player.curY].GetItem1TypeName()}_1");
                     else
-                        hideblock("itemApple_1");
+                        foreach (string itemType in Enum.GetNames(typeof(ItemType)))
+                            hideblock($"item{itemType}_1");
+
                     break;
             }
         }

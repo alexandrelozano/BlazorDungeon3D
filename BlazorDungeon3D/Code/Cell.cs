@@ -6,14 +6,26 @@
         Wall = '1'
     }
 
+    public enum ItemType
+    {
+        Apple = 'a',
+        Cheese = 'c',
+        Water = 'w'
+    }
+
     public class Cell
     {
-        public CellType type;           // 0 Corridor  1 Wall
+        public CellType type; 
         public string cssClass;
         public string character { get; set; }
         public bool visible;        // True for draw on display map
 
-        public char item1;          // a apple
-        public char item2;
+        public ItemType item1; 
+        public ItemType item2;
+
+        public string GetItem1TypeName()
+        {
+            return Enum.GetName(typeof(ItemType), item1);
+        }
     }
 }
