@@ -80,7 +80,7 @@
         {
             if (x >= 0 && x < map.mapCells.GetLength(0) && y >= 0 && y < map.mapCells.GetLength(1))
             {
-                if (map.mapCells[x, y].type == '1')
+                if (map.mapCells[x, y].type == CellType.Wall)
                     disblock(xclass);
                 else
                     hideblock(xclass);

@@ -55,7 +55,7 @@ namespace BlazorDungeon3D.Code
                 for (int y = 0; y < txtCells.GetLength(0); y++)
                 {
                     mapCells[x, y] = new Cell();
-                    mapCells[x, y].type = txtCells[txtCells.GetLength(0) - y - 1][x];
+                    mapCells[x, y].type = (CellType)txtCells[txtCells.GetLength(0) - y - 1][x];
                     mapCells[x, y].visible = false;
                 }
 
@@ -78,14 +78,14 @@ namespace BlazorDungeon3D.Code
                     x = curX;
                     for (y = curY; y >= curY - 3; y--)
                         if (y >= 0 && y < mapCells.GetLength(1))
-                            if (mapCells[x, y].type == '0')
+                            if (mapCells[x, y].type == CellType.Corridor)
                             {
                                 mapCells[x, y].visible = true;
 
                                 if (x - 1 >= 0) mapCells[x - 1, y].visible = true;
                                 if (x + 1 < mapCells.GetLength(0)) mapCells[x + 1, y].visible = true;
                             }
-                            else if (mapCells[x, y].type == '1')
+                            else if (mapCells[x, y].type == CellType.Wall)
                             {
                                 mapCells[x, y].visible = true;
                                 break;
@@ -95,14 +95,14 @@ namespace BlazorDungeon3D.Code
                     y = curY;
                     for (x = curX; x >= curX - 3; x--)
                         if (x >= 0 && x < mapCells.GetLength(0))
-                            if (mapCells[x, y].type == '0')
+                            if (mapCells[x, y].type == CellType.Corridor)
                             {
                                 mapCells[x, y].visible = true;
 
                                 if (y - 1 >= 0) mapCells[x, y - 1].visible = true;
                                 if (y + 1 < mapCells.GetLength(1)) mapCells[x, y + 1].visible = true;
                             }
-                            else if (mapCells[x, y].type == '1')
+                            else if (mapCells[x, y].type == CellType.Wall)
                             {
                                 mapCells[x, y].visible = true;
                                 break;
@@ -112,14 +112,14 @@ namespace BlazorDungeon3D.Code
                     x = curX;
                     for (y = curY; y <= curY + 3; y++)
                         if (y >= 0 && y < mapCells.GetLength(1))
-                            if (mapCells[x, y].type == '0')
+                            if (mapCells[x, y].type == CellType.Corridor)
                             {
                                 mapCells[x, y].visible = true;
 
                                 if (x - 1 >= 0) mapCells[x - 1, y].visible = true;
                                 if (x + 1 < mapCells.GetLength(0)) mapCells[x + 1, y].visible = true;
                             }
-                            else if (mapCells[x, y].type == '1')
+                            else if (mapCells[x, y].type == CellType.Wall)
                             {
                                 mapCells[x, y].visible = true;
                                 break;
@@ -129,14 +129,14 @@ namespace BlazorDungeon3D.Code
                     y = curY;
                     for (x = curX; x <= curX + 3; x++)
                         if (x >= 0 && x < mapCells.GetLength(0))
-                            if (mapCells[x, y].type == '0')
+                            if (mapCells[x, y].type == CellType.Corridor)
                             {
                                 mapCells[x, y].visible = true;
 
                                 if (y - 1 >= 0) mapCells[x, y - 1].visible = true;
                                 if (y + 1 < mapCells.GetLength(1)) mapCells[x, y + 1].visible = true;
                             }
-                            else if (mapCells[x, y].type == '1')
+                            else if (mapCells[x, y].type == CellType.Wall)
                             {
                                 mapCells[x, y].visible = true;
                                 break;
@@ -174,7 +174,7 @@ namespace BlazorDungeon3D.Code
                         }
                         else
                         {
-                            if (mapCells[x, y].type == '1')
+                            if (mapCells[x, y].type == CellType.Wall)
                             {
                                 mapCells[x, y].character = chWall;
                                 mapCells[x, y].cssClass = "mapwall";

@@ -88,16 +88,16 @@
             switch (player.curDir)
             {
                 case 0:
-                    if (map.mapCells[player.curX, player.curY - 1].type == '0') player.curY--;
+                    if (map.mapCells[player.curX, player.curY - 1].type == CellType.Corridor) player.curY--;
                     break;
                 case 1:
-                    if (map.mapCells[player.curX - 1, player.curY].type == '0') player.curX--;
+                    if (map.mapCells[player.curX - 1, player.curY].type == CellType.Corridor) player.curX--;
                     break;
                 case 2:
-                    if (map.mapCells[player.curX, player.curY + 1].type == '0') player.curY++;
+                    if (map.mapCells[player.curX, player.curY + 1].type == CellType.Corridor) player.curY++;
                     break;
                 case 3:
-                    if (map.mapCells[player.curX + 1, player.curY].type == '0') player.curX++;
+                    if (map.mapCells[player.curX + 1, player.curY].type == CellType.Corridor) player.curX++;
                     break;
             }
 
@@ -109,16 +109,16 @@
             switch (player.curDir)
             {
                 case 0:
-                    if (map.mapCells[player.curX, player.curY + 1].type == '0') player.curY++;
+                    if (map.mapCells[player.curX, player.curY + 1].type == CellType.Corridor) player.curY++;
                     break;
                 case 1:
-                    if (map.mapCells[player.curX + 1, player.curY].type == '0') player.curX++;
+                    if (map.mapCells[player.curX + 1, player.curY].type == CellType.Corridor) player.curX++;
                     break;
                 case 2:
-                    if (map.mapCells[player.curX, player.curY - 1].type == '0') player.curY--;
+                    if (map.mapCells[player.curX, player.curY - 1].type == CellType.Corridor) player.curY--;
                     break;
                 case 3:
-                    if (map.mapCells[player.curX - 1, player.curY].type == '0') player.curX--;
+                    if (map.mapCells[player.curX - 1, player.curY].type == CellType.Corridor) player.curX--;
                     break;
             }
 
@@ -130,16 +130,16 @@
             switch (player.curDir)
             {
                 case 0:
-                    if (map.mapCells[player.curX + 1, player.curY].type == '0') player.curX++;
+                    if (map.mapCells[player.curX + 1, player.curY].type == CellType.Corridor) player.curX++;
                     break;
                 case 1:
-                    if (map.mapCells[player.curX, player.curY - 1].type == '0') player.curY--;
+                    if (map.mapCells[player.curX, player.curY - 1].type == CellType.Corridor) player.curY--;
                     break;
                 case 2:
-                    if (map.mapCells[player.curX - 1, player.curY].type == '0') player.curX--;
+                    if (map.mapCells[player.curX - 1, player.curY].type == CellType.Corridor) player.curX--;
                     break;
                 case 3:
-                    if (map.mapCells[player.curX, player.curY + 1].type == '0') player.curY++;
+                    if (map.mapCells[player.curX, player.curY + 1].type == CellType.Corridor) player.curY++;
                     break;
             }
 
@@ -151,16 +151,16 @@
             switch (player.curDir)
             {
                 case 0:
-                    if (map.mapCells[player.curX - 1, player.curY].type == '0') player.curX--;
+                    if (map.mapCells[player.curX - 1, player.curY].type == CellType.Corridor) player.curX--;
                     break;
                 case 1:
-                    if (map.mapCells[player.curX, player.curY + 1].type == '0') player.curY++;
+                    if (map.mapCells[player.curX, player.curY + 1].type == CellType.Corridor) player.curY++;
                     break;
                 case 2:
-                    if (map.mapCells[player.curX + 1, player.curY].type == '0') player.curX++;
+                    if (map.mapCells[player.curX + 1, player.curY].type == CellType.Corridor) player.curX++;
                     break;
                 case 3:
-                    if (map.mapCells[player.curX, player.curY - 1].type == '0') player.curY--;
+                    if (map.mapCells[player.curX, player.curY - 1].type == CellType.Corridor) player.curY--;
                     break;
             }
 
