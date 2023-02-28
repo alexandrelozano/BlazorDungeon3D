@@ -10,7 +10,10 @@
     {
         Apple = 'a',
         Cheese = 'c',
-        Water = 'w'
+        Water = 'w',
+        Bread = 'b',
+        Corn = 'o',
+        Scroll = 's'
     }
 
     public class Cell

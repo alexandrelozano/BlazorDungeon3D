@@ -57,8 +57,12 @@ namespace BlazorDungeon3D.Code
                     mapCells[x, y].visible = false;
                 }
 
-            mapCells[1, 19].item1 = ItemType.Apple;
-            mapCells[1, 17].item2 = ItemType.Apple;
+            mapCells[1, 18].item1 = ItemType.Apple;
+            mapCells[1, 18].item2 = ItemType.Bread;
+            mapCells[1, 17].item1 = ItemType.Cheese;
+            mapCells[1, 17].item2 = ItemType.Corn;
+            mapCells[1, 16].item1 = ItemType.Scroll;
+            mapCells[1, 16].item2 = ItemType.Water;
         }
 
         public void UpdateVisibleMap(int curX, int curY, int curDir)

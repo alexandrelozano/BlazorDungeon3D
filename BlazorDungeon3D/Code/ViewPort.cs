@@ -96,17 +96,17 @@ namespace BlazorDungeon3D.Code
             string zone1 = (dir == 0 || dir == 1) ? "L" : "R";
             string zone2 = (dir == 0 || dir == 1) ? "R" : "L";
 
+            foreach (string itemType in Enum.GetNames(typeof(ItemType)))
+                hideblock($"item{itemType}{zone1}_{order}");
+
             if (x > 0 && y > 0 && x < map.mapCells.GetLength(0) && y < map.mapCells.GetLength(1) && map.mapCells[x, y].item1 > 0)
                 disblock($"item{map.mapCells[x, y].GetItem1TypeName()}{zone1}_{order}");
-            else
-                foreach (string itemType in Enum.GetNames(typeof(ItemType)))
-                    hideblock($"item{itemType}{zone1}_{order}");
+
+            foreach (string itemType in Enum.GetNames(typeof(ItemType)))
+                hideblock($"item{itemType}{zone2}_{order}");
 
             if (x > 0 && y > 0 && x < map.mapCells.GetLength(0) && y < map.mapCells.GetLength(1) && map.mapCells[x, y].item2 > 0)
                 disblock($"item{map.mapCells[x, y].GetItem2TypeName()}{zone2}_{order}");
-            else
-                foreach (string itemType in Enum.GetNames(typeof(ItemType)))
-                    hideblock($"item{itemType}{zone2}_{order}");
         }
 
         public void UpdateViewport(Player player, Map map)

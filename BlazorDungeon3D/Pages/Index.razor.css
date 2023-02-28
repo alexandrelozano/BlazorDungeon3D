@@ -168,78 +168,6 @@
     height: 58px;
 }
 
-.itemAppleL_1 {
-    position: absolute;
-    left: 105px;
-    top: 190px;
-    background-image: url('./gfx/itemApple_1.png');
-    width: 73px;
-    z-index: 400;
-    height: 51px;
-    display: none;
-    background-repeat: no-repeat;
-}
-
-.itemAppleL_2 {
-    position: absolute;
-    left: 148px;
-    top: 155px;
-    background-image: url('./gfx/itemApple_2.png');
-    width: 49px;
-    z-index: 300;
-    height: 33px;
-    display: none;
-    background-repeat: no-repeat;
-}
-
-.itemAppleL_3 {
-    position: absolute;
-    left: 180px;
-    top: 128px;
-    background-image: url('./gfx/itemApple_3.png');
-    width: 37px;
-    z-index: 200;
-    height: 24px;
-    display: none;
-    background-repeat: no-repeat;
-}
-
-.itemAppleR_1 {
-    position: absolute;
-    left: 280px;
-    top: 190px;
-    background-image: url('./gfx/itemApple_1.png');
-    width: 73px;
-    z-index: 400;
-    height: 51px;
-    display: none;
-    background-repeat: no-repeat;
-}
-
-.itemAppleR_2 {
-    position: absolute;
-    left: 268px;
-    top: 155px;
-    background-image: url('./gfx/itemApple_2.png');
-    width: 49px;
-    z-index: 300;
-    height: 33px;
-    display: none;
-    background-repeat: no-repeat;
-}
-
-.itemAppleR_3 {
-    position: absolute;
-    left: 245px;
-    top: 128px;
-    background-image: url('./gfx/itemApple_3.png');
-    width: 37px;
-    z-index: 200;
-    height: 24px;
-    display: none;
-    background-repeat: no-repeat;
-}
-
 .wallLside0 {
     position: absolute;
     left: 0px;
@@ -667,4 +595,436 @@
     width: 448px;
     height: 272px;
     display: none;
+}
+
+.itemAppleL_1 {
+    position: absolute;
+    left: 105px;
+    top: 190px;
+    background-image: url('./gfx/itemApple_1.png');
+    width: 73px;
+    z-index: 400;
+    height: 51px;
+    display: none;
+    background-repeat: no-repeat;
+}
+
+.itemAppleL_2 {
+    position: absolute;
+    left: 148px;
+    top: 155px;
+    background-image: url('./gfx/itemApple_2.png');
+    width: 49px;
+    z-index: 300;
+    height: 33px;
+    display: none;
+    background-repeat: no-repeat;
+}
+
+.itemAppleL_3 {
+    position: absolute;
+    left: 180px;
+    top: 128px;
+    background-image: url('./gfx/itemApple_3.png');
+    width: 37px;
+    z-index: 200;
+    height: 24px;
+    display: none;
+    background-repeat: no-repeat;
+}
+
+.itemAppleR_1 {
+    position: absolute;
+    left: 280px;
+    top: 190px;
+    background-image: url('./gfx/itemApple_1.png');
+    width: 73px;
+    z-index: 400;
+    height: 51px;
+    display: none;
+    background-repeat: no-repeat;
+}
+
+.itemAppleR_2 {
+    position: absolute;
+    left: 268px;
+    top: 155px;
+    background-image: url('./gfx/itemApple_2.png');
+    width: 49px;
+    z-index: 300;
+    height: 33px;
+    display: none;
+    background-repeat: no-repeat;
+}
+
+.itemAppleR_3 {
+    position: absolute;
+    left: 245px;
+    top: 128px;
+    background-image: url('./gfx/itemApple_3.png');
+    width: 37px;
+    z-index: 200;
+    height: 24px;
+    display: none;
+    background-repeat: no-repeat;
+}
+
+.itemWaterL_1 {
+    position: absolute;
+    left: 70px;
+    top: 190px;
+    background-image: url('./gfx/itemWater_1.png');
+    width: 160px;
+    z-index: 400;
+    height: 54px;
+    display: none;
+    background-repeat: no-repeat;
+}
+
+.itemWaterL_2 {
+    position: absolute;
+    left: 118px;
+    top: 155px;
+    background-image: url('./gfx/itemWater_2.png');
+    width: 100px;
+    z-index: 300;
+    height: 33px;
+    display: none;
+    background-repeat: no-repeat;
+}
+
+.itemWaterL_3 {
+    position: absolute;
+    left: 145px;
+    top: 128px;
+    background-image: url('./gfx/itemWater_3.png');
+    width: 81px;
+    z-index: 200;
+    height: 24px;
+    display: none;
+    background-repeat: no-repeat;
+}
+
+.itemWaterR_1 {
+    position: absolute;
+    left: 210px;
+    top: 190px;
+    background-image: url('./gfx/itemWater_1.png');
+    width: 160px;
+    z-index: 400;
+    height: 54px;
+    display: none;
+    background-repeat: no-repeat;
+}
+
+.itemWaterR_2 {
+    position: absolute;
+    left: 220px;
+    top: 155px;
+    background-image: url('./gfx/itemWater_2.png');
+    width: 100px;
+    z-index: 300;
+    height: 33px;
+    display: none;
+    background-repeat: no-repeat;
+}
+
+.itemWaterR_3 {
+    position: absolute;
+    left: 215px;
+    top: 128px;
+    background-image: url('./gfx/itemWater_3.png');
+    width: 81px;
+    z-index: 200;
+    height: 24px;
+    display: none;
+    background-repeat: no-repeat;
+}
+
+.itemCheeseL_1 {
+    position: absolute;
+    left: 105px;
+    top: 190px;
+    background-image: url('./gfx/itemCheese_1.png');
+    width: 113px;
+    z-index: 400;
+    height: 60px;
+    display: none;
+    background-repeat: no-repeat;
+}
+
+.itemCheeseL_2 {
+    position: absolute;
+    left: 148px;
+    top: 155px;
+    background-image: url('./gfx/itemCheese_2.png');
+    width: 72px;
+    z-index: 300;
+    height: 37px;
+    display: none;
+    background-repeat: no-repeat;
+}
+
+.itemCheeseL_3 {
+    position: absolute;
+    left: 170px;
+    top: 128px;
+    background-image: url('./gfx/itemCheese_3.png');
+    width: 60px;
+    z-index: 200;
+    height: 28px;
+    display: none;
+    background-repeat: no-repeat;
+}
+
+.itemCheeseR_1 {
+    position: absolute;
+    left: 250px;
+    top: 190px;
+    background-image: url('./gfx/itemCheese_1.png');
+    width: 113px;
+    z-index: 400;
+    height: 60px;
+    display: none;
+    background-repeat: no-repeat;
+}
+
+.itemCheeseR_2 {
+    position: absolute;
+    left: 240px;
+    top: 155px;
+    background-image: url('./gfx/itemCheese_2.png');
+    width: 72px;
+    z-index: 300;
+    height: 37px;
+    display: none;
+    background-repeat: no-repeat;
+}
+
+.itemCheeseR_3 {
+    position: absolute;
+    left: 225px;
+    top: 128px;
+    background-image: url('./gfx/itemCheese_3.png');
+    width: 60px;
+    z-index: 200;
+    height: 28px;
+    display: none;
+    background-repeat: no-repeat;
+}
+
+.itemBreadL_1 {
+    position: absolute;
+    left: 85px;
+    top: 190px;
+    background-image: url('./gfx/itemBread_1.png');
+    width: 108px;
+    z-index: 400;
+    height: 63px;
+    display: none;
+    background-repeat: no-repeat;
+}
+
+.itemBreadL_2 {
+    position: absolute;
+    left: 128px;
+    top: 155px;
+    background-image: url('./gfx/itemBread_2.png');
+    width: 65px;
+    z-index: 300;
+    height: 40px;
+    display: none;
+    background-repeat: no-repeat;
+}
+
+.itemBreadL_3 {
+    position: absolute;
+    left: 160px;
+    top: 128px;
+    background-image: url('./gfx/itemBread_3.png');
+    width: 53px;
+    z-index: 200;
+    height: 32px;
+    display: none;
+    background-repeat: no-repeat;
+}
+
+.itemBreadR_1 {
+    position: absolute;
+    left: 250px;
+    top: 190px;
+    background-image: url('./gfx/itemBread_1.png');
+    width: 108px;
+    z-index: 400;
+    height: 63px;
+    display: none;
+    background-repeat: no-repeat;
+}
+
+.itemBreadR_2 {
+    position: absolute;
+    left: 248px;
+    top: 155px;
+    background-image: url('./gfx/itemBread_2.png');
+    width: 65px;
+    z-index: 300;
+    height: 40px;
+    display: none;
+    background-repeat: no-repeat;
+}
+
+.itemBreadR_3 {
+    position: absolute;
+    left: 240px;
+    top: 128px;
+    background-image: url('./gfx/itemBread_3.png');
+    width: 53px;
+    z-index: 200;
+    height: 32px;
+    display: none;
+    background-repeat: no-repeat;
+}
+
+.itemCornL_1 {
+    position: absolute;
+    left: 105px;
+    top: 190px;
+    background-image: url('./gfx/itemCorn_1.png');
+    width: 107px;
+    z-index: 400;
+    height: 41px;
+    display: none;
+    background-repeat: no-repeat;
+}
+
+.itemCornL_2 {
+    position: absolute;
+    left: 148px;
+    top: 155px;
+    background-image: url('./gfx/itemCorn_2.png');
+    width: 64px;
+    z-index: 300;
+    height: 24px;
+    display: none;
+    background-repeat: no-repeat;
+}
+
+.itemCornL_3 {
+    position: absolute;
+    left: 170px;
+    top: 128px;
+    background-image: url('./gfx/itemCorn_3.png');
+    width: 56px;
+    z-index: 200;
+    height: 20px;
+    display: none;
+    background-repeat: no-repeat;
+}
+
+.itemCornR_1 {
+    position: absolute;
+    left: 260px;
+    top: 190px;
+    background-image: url('./gfx/itemCorn_1.png');
+    width: 107px;
+    z-index: 400;
+    height: 41px;
+    display: none;
+    background-repeat: no-repeat;
+}
+
+.itemCornR_2 {
+    position: absolute;
+    left: 248px;
+    top: 155px;
+    background-image: url('./gfx/itemCorn_2.png');
+    width: 64px;
+    z-index: 300;
+    height: 24px;
+    display: none;
+    background-repeat: no-repeat;
+}
+
+.itemCornR_3 {
+    position: absolute;
+    left: 235px;
+    top: 128px;
+    background-image: url('./gfx/itemCorn_3.png');
+    width: 56px;
+    z-index: 200;
+    height: 20px;
+    display: none;
+    background-repeat: no-repeat;
+}
+
+.itemScrollL_1 {
+    position: absolute;
+    left: 85px;
+    top: 190px;
+    background-image: url('./gfx/itemScroll_1.png');
+    width: 148px;
+    z-index: 400;
+    height: 32px;
+    display: none;
+    background-repeat: no-repeat;
+}
+
+.itemScrollL_2 {
+    position: absolute;
+    left: 140px;
+    top: 155px;
+    background-image: url('./gfx/itemScroll_2.png');
+    width: 92px;
+    z-index: 300;
+    height: 20px;
+    display: none;
+    background-repeat: no-repeat;
+}
+
+.itemScrollL_3 {
+    position: absolute;
+    left: 160px;
+    top: 128px;
+    background-image: url('./gfx/itemScroll_3.png');
+    width: 76px;
+    z-index: 200;
+    height: 16px;
+    display: none;
+    background-repeat: no-repeat;
+}
+
+.itemScrollR_1 {
+    position: absolute;
+    left: 205px;
+    top: 190px;
+    background-image: url('./gfx/itemScroll_1.png');
+    width: 148px;
+    z-index: 400;
+    height: 32px;
+    display: none;
+    background-repeat: no-repeat;
+}
+
+.itemScrollR_2 {
+    position: absolute;
+    left: 218px;
+    top: 155px;
+    background-image: url('./gfx/itemScroll_2.png');
+    width: 92px;
+    z-index: 300;
+    height: 20px;
+    display: none;
+    background-repeat: no-repeat;
+}
+
+.itemScrollR_3 {
+    position: absolute;
+    left: 215px;
+    top: 128px;
+    background-image: url('./gfx/itemScroll_3.png');
+    width: 76px;
+    z-index: 200;
+    height: 16px;
+    display: none;
+    background-repeat: no-repeat;
 }
