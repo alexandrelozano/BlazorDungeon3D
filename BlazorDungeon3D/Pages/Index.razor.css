@@ -607,6 +607,7 @@
     height: 51px;
     display: none;
     background-repeat: no-repeat;
+    cursor: pointer;
 }
 
 .itemAppleL_2 {
@@ -643,6 +644,7 @@
     height: 51px;
     display: none;
     background-repeat: no-repeat;
+    cursor: pointer;
 }
 
 .itemAppleR_2 {
@@ -679,6 +681,7 @@
     height: 54px;
     display: none;
     background-repeat: no-repeat;
+    cursor: pointer;
 }
 
 .itemWaterL_2 {
@@ -715,6 +718,7 @@
     height: 54px;
     display: none;
     background-repeat: no-repeat;
+    cursor: pointer;
 }
 
 .itemWaterR_2 {
@@ -751,6 +755,7 @@
     height: 60px;
     display: none;
     background-repeat: no-repeat;
+    cursor: pointer;
 }
 
 .itemCheeseL_2 {
@@ -787,6 +792,7 @@
     height: 60px;
     display: none;
     background-repeat: no-repeat;
+    cursor: pointer;
 }
 
 .itemCheeseR_2 {
@@ -823,6 +829,7 @@
     height: 63px;
     display: none;
     background-repeat: no-repeat;
+    cursor: pointer;
 }
 
 .itemBreadL_2 {
@@ -859,6 +866,7 @@
     height: 63px;
     display: none;
     background-repeat: no-repeat;
+    cursor: pointer;
 }
 
 .itemBreadR_2 {
@@ -895,6 +903,7 @@
     height: 41px;
     display: none;
     background-repeat: no-repeat;
+    cursor: pointer;
 }
 
 .itemCornL_2 {
@@ -931,6 +940,7 @@
     height: 41px;
     display: none;
     background-repeat: no-repeat;
+    cursor: pointer;
 }
 
 .itemCornR_2 {
@@ -967,6 +977,7 @@
     height: 32px;
     display: none;
     background-repeat: no-repeat;
+    cursor: pointer;
 }
 
 .itemScrollL_2 {
@@ -1003,6 +1014,7 @@
     height: 32px;
     display: none;
     background-repeat: no-repeat;
+    cursor: pointer;
 }
 
 .itemScrollR_2 {

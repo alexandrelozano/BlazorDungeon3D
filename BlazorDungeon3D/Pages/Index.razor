@@ -21,7 +21,7 @@
 
         @foreach (KeyValuePair<string, string> kvp in game.viewport.dicDispBlocks)
         {
-            <div class="@kvp.Key" style="display: @kvp.Value"></div>
+            <div class="@kvp.Key" style="display: @kvp.Value" @onclick="@(e => ClickBlock(@kvp.Key))"></div>
         }
 
         <div id="commandsarea">
@@ -88,6 +88,36 @@ X:@game.player.curX Y:@game.player.curY Dir:@game.player.curDir
         {
             // Subscribe to the OnResized event. This will do work when the browser is resized.
             listener.OnResized += WindowResized;
+        }
+    }
+
+    protected async void ClickBlock(string block)
+    {
+        if (block.Substring(block.Length - 3, 3) == "L_1")
+        {
+            if (game.player.curDir == 0 && game.player.curY > 0)
+                game.map.mapCells[game.player.curX, game.player.curY - 1].item1 = ItemType.Nothing;
+            else if (game.player.curDir == 1 && game.player.curX > 0)
+                game.map.mapCells[game.player.curX - 1, game.player.curY].item1 = ItemType.Nothing;
+            else if (game.player.curDir == 2 && game.player.curY < game.map.mapCells.GetLength(1) - 1)
+                game.map.mapCells[game.player.curX, game.player.curY + 1].item2 = ItemType.Nothing;
+            else if (game.player.curDir == 3 && game.player.curX < game.map.mapCells.GetLength(0) - 1)
+                game.map.mapCells[game.player.curX + 1, game.player.curY].item2 = ItemType.Nothing;
+
+            game.viewport.UpdateViewport(game.player, game.map);
+        }
+        else if (block.Substring(block.Length - 3, 3) == "R_1")
+        {
+            if (game.player.curDir == 0 && game.player.curY > 0)
+                game.map.mapCells[game.player.curX, game.player.curY - 1].item2 = ItemType.Nothing;
+            else if (game.player.curDir == 1 && game.player.curX > 0)
+                game.map.mapCells[game.player.curX - 1, game.player.curY].item2 = ItemType.Nothing;
+            else if (game.player.curDir == 2 && game.player.curY < game.map.mapCells.GetLength(1) - 1)
+                game.map.mapCells[game.player.curX, game.player.curY + 1].item1 = ItemType.Nothing;
+            else if (game.player.curDir == 3 && game.player.curX < game.map.mapCells.GetLength(0) - 1)
+                game.map.mapCells[game.player.curX + 1, game.player.curY].item1 = ItemType.Nothing;
+
+            game.viewport.UpdateViewport(game.player, game.map);
         }
     }
 

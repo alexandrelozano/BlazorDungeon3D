@@ -13,7 +13,8 @@
         Water = 'w',
         Bread = 'b',
         Corn = 'o',
-        Scroll = 's'
+        Scroll = 's',
+        Nothing = ' '
     }
 
     public class Cell
